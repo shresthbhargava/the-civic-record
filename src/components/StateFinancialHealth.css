@@ -1,0 +1,90 @@
+.finance-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+}
+
+.chart-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  margin-bottom: 4px;
+}
+
+.chart-subtitle {
+  font-family: 'Lora', serif;
+  font-size: 0.85rem;
+  font-style: italic;
+  color: var(--text-secondary);
+  margin-bottom: 24px;
+}
+
+.infographic-chart {
+  border-top: 2px solid var(--border-color);
+  border-bottom: 2px solid var(--border-color);
+  padding: 16px 0;
+}
+
+.chart-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.chart-row:last-child {
+  margin-bottom: 0;
+}
+
+.chart-label {
+  width: 120px;
+  display: flex;
+  flex-direction: column;
+}
+
+.state-name {
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.state-gdp {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.chart-bar-container {
+  flex: 1;
+  position: relative;
+  height: 24px;
+  background: rgba(0,0,0,0.05);
+  border-left: 1px solid var(--border-color);
+}
+
+[data-theme='dark'] .chart-bar-container {
+  background: rgba(255,255,255,0.05);
+}
+
+.chart-bar {
+  height: 100%;
+  background: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 8px;
+}
+
+.chart-bar.bar-alert {
+  background: var(--accent-gold);
+}
+
+.bar-value {
+  color: var(--bg-primary);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.chart-source {
+  font-size: 0.8rem;
+  text-align: right;
+  font-style: italic;
+  margin-top: 8px;
+  color: var(--text-secondary);
+}

@@ -1,0 +1,247 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display+SC:wght@700;900&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Noto+Sans+Devanagari:wght@400;700&display=swap');
+
+:root {
+  /* Vintage 1947 Newsprint Palette */
+  --bg-primary: #F5F0E8;
+  --text-primary: #1A1A1A;
+  --text-secondary: #333333;
+  --border-color: #1A1A1A;
+
+  /* Ink Colors */
+  --accent-gold: #B8860B; /* Medium debt */
+  --accent-saffron: #D05315; /* Subdued vintage saffron */
+  --accent-red: #8B0000; /* High debt / Stamps */
+  --accent-green: #2D5A27; /* Low debt */
+  --accent-blue: #002244; /* Secondary stamp ink */
+
+  /* Vintage Textures */
+  --halftone-pattern: url('data:image/svg+xml;utf8,<svg width="4" height="4" viewBox="0 0 4 4" xmlns="http://www.w3.org/2000/svg"><circle cx="2" cy="2" r="0.5" fill="%231a1a1a" opacity="0.05"/></svg>');
+  --noise-pattern: url('data:image/svg+xml;utf8,<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23n)" opacity="0.06"/></svg>');
+
+  /* Cursors */
+  --cursor-pen: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="%231a1a1a" stroke="none"><path d="M12 2L16 12L12 22L8 12L12 2Z"/></svg>') 12 22, auto;
+  --cursor-stamp: url('data:image/svg+xml;utf8,<svg width="32" height="32" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9 11v-6c0-1.1.9-2 2-2s2 .9 2 2v2M13 7c0-1.1.9-2 2-2s2 .9 2 2v2M17 9c0-1.1.9-2 2-2s2 .9 2 2v4M5 13v-2c0-1.1.9-2 2-2s2 .9 2 2v7.5l-3.4-3.4c-.8-.8-2-.8-2.8 0-.8.8-.8 2 0 2.8l7.2 7.1h6.5c3.3 0 6-2.7 6-6v-6c0-1.1-.9-2-2-2h-3" fill="none" stroke="%238B0000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>') 12 2, pointer;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  cursor: var(--cursor-pen);
+}
+
+a, button, [role="button"], input[type="submit"], input[type="button"], label {
+  cursor: var(--cursor-stamp) !important;
+}
+
+body {
+  font-family: 'Lora', serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.4; /* Tighter for dense vintage feel */
+  font-size: 0.95rem; /* Smaller body text */
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  position: relative;
+  transition: background-image 1.5s ease-in-out;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+/* Vintage overlays: Yellowing, noise, halftone, fold lines */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image: var(--noise-pattern), var(--halftone-pattern);
+  background-color: rgba(245, 240, 232, 0.95); /* Extremely opaque to hide bg image until needed */
+  pointer-events: none;
+  z-index: -2;
+  transition: background-color 1.5s ease-in-out;
+}
+
+body.state-view-active::before {
+  background-color: rgba(230, 215, 190, 0.85); /* Sepia tint over the background image */
+}
+
+/* Horizontal and Vertical Faint Fold Lines */
+body::after {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: 
+    linear-gradient(to right, transparent 49.9%, rgba(0,0,0,0.03) 50%, transparent 50.1%),
+    linear-gradient(to bottom, transparent 49.9%, rgba(0,0,0,0.03) 50%, transparent 50.1%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Playfair Display SC', 'Playfair Display', serif;
+  font-weight: 900;
+  line-height: 0.9; /* Very tight headlines */
+  color: var(--text-primary);
+  /* Ink bleed shadow */
+  text-shadow: 0px 0px 1px rgba(0,0,0,0.3);
+}
+
+.hindi-text {
+  font-family: 'Noto Sans Devanagari', sans-serif;
+}
+
+a {
+  color: var(--text-primary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* Layout Utilities */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.border-top-thick { border-top: 4px solid var(--border-color); padding-top: 16px; }
+.border-bottom-thick { border-bottom: 4px solid var(--border-color); padding-bottom: 16px; }
+.border-bottom-thin { border-bottom: 1px solid var(--border-color); padding-bottom: 16px; }
+.border-right-thin { border-right: 1px solid var(--border-color); padding-right: 24px; }
+
+/* Section Flags (Classic Newspaper) */
+.section-flag {
+  display: inline-block;
+  background-color: var(--text-primary);
+  color: var(--bg-primary);
+  font-family: 'Playfair Display SC', serif;
+  font-size: 1.2rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 4px 12px;
+  margin-bottom: 24px;
+}
+
+/* Modal Paper Fold Animation */
+@keyframes paper-fold-in {
+  0% { transform: perspective(1000px) rotateX(-90deg); opacity: 0; transform-origin: top center; }
+  100% { transform: perspective(1000px) rotateX(0deg); opacity: 1; transform-origin: top center; }
+}
+
+.modal-enter {
+  animation: paper-fold-in 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+/* Page Turn Animation */
+.page-container {
+  transform-origin: left center;
+  transition: transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1), opacity 0.8s ease;
+}
+
+.page-turn-exit {
+  transform: perspective(2000px) rotateY(-90deg);
+  opacity: 0;
+}
+
+.page-turn-enter {
+  animation: page-curl-in 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+@keyframes page-curl-in {
+  0% { transform: perspective(2000px) rotateY(90deg); opacity: 0; transform-origin: right center; }
+  100% { transform: perspective(2000px) rotateY(0deg); opacity: 1; transform-origin: right center; }
+}
+
+/* Typesetting Typewriter Animation */
+@keyframes type-char {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.typeset-char {
+  opacity: 0;
+  animation: type-char 0.05s forwards;
+}
+
+@keyframes slide-in-fade {
+  0% { opacity: 0; transform: translateX(20px); }
+  100% { opacity: 1; transform: translateX(0); }
+}
+
+.slide-in-column {
+  opacity: 0;
+  animation: slide-in-fade 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+/* Common Newspaper Elements */
+.drop-cap::first-letter {
+  font-family: 'Playfair Display SC', serif;
+  float: left;
+  font-size: 5rem;
+  line-height: 0.8;
+  padding-right: 8px;
+  padding-top: 8px;
+  color: var(--text-primary);
+}
+
+.vintage-stamp {
+  display: inline-block;
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  border: 3px solid currentColor;
+  padding: 4px 8px;
+  border-radius: 4px;
+  opacity: 0.85;
+  /* Distressed texture via background clip */
+  background-image: var(--noise-pattern);
+  background-blend-mode: multiply;
+}
+
+.stamp-red { color: var(--accent-red); transform: rotate(-4deg); }
+.stamp-blue { color: var(--accent-blue); transform: rotate(2deg); }
+
+/* Stamp Click Animation */
+@keyframes stamp-press {
+  0% { transform: scale(1); }
+  50% { transform: scale(0.95); opacity: 1; }
+  100% { transform: scale(1); }
+}
+.stamp-press-anim {
+  animation: stamp-press 0.2s ease-out;
+}
+
+/* Ink Trail Dots */
+.ink-dot {
+  position: fixed;
+  width: 4px;
+  height: 4px;
+  background-color: var(--text-primary);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.6;
+  transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+}
+
+/* 4-Column Layout Utilities */
+.four-column-grid {
+  column-count: 4;
+  column-gap: 24px;
+  column-rule: 1px solid var(--border-color);
+  text-align: justify;
+}
+
+.pull-quote {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 1.8rem;
+  line-height: 1.2;
+  text-align: center;
+  margin: 24px 0;
+  padding: 0 24px;
+  border-left: 6px solid var(--border-color);
+  border-right: 6px solid var(--border-color);
+  column-span: all;
+}

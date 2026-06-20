@@ -1,0 +1,81 @@
+.newspaper-hero {
+  /* padding-top: 24px; */
+}
+
+.masthead-section {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.masthead-top-strip {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'Lora', serif;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+
+.masthead-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 5rem;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  margin: 0;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.masthead-tagline {
+  color: var(--accent-saffron);
+  font-size: 1.5rem;
+  margin-top: 12px;
+  letter-spacing: 0.1em;
+}
+
+.masthead-bottom-strip {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 24px;
+  font-family: 'Lora', serif;
+}
+
+.search-input-wrapper {
+  display: flex;
+  max-width: 800px;
+  margin: 0 auto;
+  border: 2px solid var(--border-color);
+  background: var(--bg-primary);
+}
+
+.newspaper-search {
+  flex: 1;
+  padding: 16px 24px;
+  font-family: 'Lora', serif;
+  font-size: 1.2rem;
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  outline: none;
+}
+
+.search-btn {
+  background: var(--text-primary);
+  color: var(--bg-primary);
+  border: none;
+  padding: 0 32px;
+  font-family: 'Lora', serif;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.search-btn:hover {
+  background: var(--accent-saffron);
+}
+
+.map-hero-section {
+  padding: 40px 0;
+}

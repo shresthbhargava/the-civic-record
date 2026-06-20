@@ -1,0 +1,36 @@
+/* Additional styles for AccountabilitySearch */
+.accountability-score {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.9rem;
+  border: 1px solid var(--border-color);
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: rgba(0,0,0,0.05);
+}
+
+[data-theme='dark'] .accountability-score {
+  background: rgba(255,255,255,0.05);
+}
+
+/* Ensure existing AccountabilitySearch styles remain */
+.editorial-story { /* Inherits from index.css container */ }
+.story-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 32px; }
+.story-headline { font-size: 3rem; line-height: 1.1; margin-bottom: 12px; }
+.official-box { border: 2px solid var(--border-color); padding: 24px; text-align: center; background: var(--bg-primary); }
+.official-box h4 { text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.85rem; margin-bottom: 16px; color: var(--text-secondary); }
+.official-name { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; margin-bottom: 4px; }
+.official-title { font-style: italic; margin-bottom: 12px; }
+.official-contact { font-family: monospace; font-size: 0.9rem; }
+.editorial-box { background: rgba(0,0,0,0.03); padding: 24px; border-top: 4px solid var(--border-color); }
+[data-theme='dark'] .editorial-box { background: rgba(255,255,255,0.03); }
+.editorial-box h4 { font-family: 'Playfair Display', serif; font-size: 1.5rem; margin-bottom: 16px; }
+.action-list { padding-left: 20px; list-style-type: square; }
+.action-list li { margin-bottom: 8px; }
+.sidebar-module h4 { font-family: 'Playfair Display', serif; font-size: 1.25rem; margin-bottom: 16px; text-transform: uppercase; }
+.chain-list { list-style: none; padding: 0; }
+.chain-list li { margin-bottom: 16px; display: flex; flex-direction: column; }
+.chain-list .role { font-size: 0.85rem; text-transform: uppercase; color: var(--text-secondary); }
+.chain-list .name { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; }
+.laws-list { list-style-type: disc; padding-left: 20px; color: var(--text-secondary); }
+.laws-list li { margin-bottom: 12px; font-size: 0.95rem; }
+.mt-8 { margin-top: 32px; }

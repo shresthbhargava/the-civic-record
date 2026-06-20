@@ -1,0 +1,59 @@
+.dispatch-layout {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 32px;
+}
+
+.dispatch-article {
+  display: flex;
+  flex-direction: column;
+}
+
+.dispatch-category {
+  font-family: 'Lora', serif;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+}
+
+.dispatch-title {
+  font-size: 1.8rem;
+  margin-bottom: 12px;
+  line-height: 1.2;
+}
+
+.dispatch-content {
+  margin-bottom: 16px;
+}
+
+.dispatch-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  font-style: italic;
+  color: var(--text-secondary);
+}
+
+.wire-list {
+  list-style: none;
+  padding: 0;
+}
+
+.wire-list li {
+  margin-bottom: 16px;
+  display: flex;
+  gap: 12px;
+}
+
+.wire-list .time {
+  font-family: monospace;
+  font-weight: bold;
+  color: var(--text-primary);
+}
+
+.wire-list p {
+  font-size: 0.9rem;
+  margin: 0;
+}

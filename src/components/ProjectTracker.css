@@ -1,0 +1,38 @@
+.classifieds-layout {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 32px;
+}
+
+.classified-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.classified-item {
+  border: 1px solid var(--border-color);
+  padding: 16px;
+  font-size: 0.9rem;
+}
+
+.classified-id {
+  font-family: monospace;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+}
+
+.classified-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+}
+
+.classified-desc {
+  margin-bottom: 4px;
+}
+
+.classified-status {
+  font-style: italic;
+}
