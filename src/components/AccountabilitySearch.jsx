@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import Modal from './Modal';
 import RtiModal from './RtiModal';
@@ -7,7 +8,7 @@ import { getTranslation } from '../i18n';
 
 const API_BASE = 'https://civicos-r2sf.onrender.com';
 
-export default function AccountabilitySearch({ activeState, lang }) {
+export default function AccountabilitySearch({ activeState, lang, searchEvent }) {
   const [modalData, setModalData] = useState(null);
   const [isTypesetting, setIsTypesetting] = useState(false);
   const [isRtiOpen, setIsRtiOpen] = useState(false);
@@ -30,7 +31,54 @@ export default function AccountabilitySearch({ activeState, lang }) {
     'Meghalaya': 'ML', 'Nagaland': 'NL', 'Tripura': 'TR',
     'Arunachal Pradesh': 'AR', 'Mizoram': 'MZ', 'Sikkim': 'SK',
   };
+  const handleSearchWithQuery = async (query) => {
+    if (!query.trim()) return;
+    setIsSearching(true);
+    setError(null);
+    setNoResults(false);
+    setSearchData(null);
+    setIsTypesetting(true);
+    try {
+      const stateCode = activeState ? (stateCodeMap[activeState] || '') : '';
+      const url = `${API_BASE}/api/v1/incidents/search?query=${encodeURIComponent(query)}${stateCode ? `&stateCode=${stateCode}` : ''}`;
+      const response = await fetch(url);
+      if (!response.ok) throw new Error('Failed to fetch');
+      const data = await response.json();
+      if (!data.data?.matches || data.data.matches.length === 0) {
+        setNoResults(true);
+      } else {
+        const match = data.data.matches[0];
+        setSearchData({
+          headline: `${match.categoryName.toUpperCase()} — ${match.responsibleDepartment.name.toUpperCase()}`,
+          department: match.responsibleDepartment.name,
+          jurisdiction: match.responsibleDepartment.jurisdictionLevel,
+          score: 'B+',
+          date: new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' }),
+          chain: match.accountabilityChain.map(node => ({ role: node.jurisdictionLevel, name: node.name, bio: node.ministry || '' })),
+          official: match.responsibleDepartment.currentOfficials?.[0] ? {
+            name: match.responsibleDepartment.currentOfficials[0].fullName,
+            title: match.responsibleDepartment.currentOfficials[0].postingTitle,
+            contact: match.responsibleDepartment.currentOfficials[0].contactEmail,
+            since: match.responsibleDepartment.currentOfficials[0].startDate,
+          } : null,
+          actions: match.citizenActions,
+          acts: match.relevantActs,
+          matchedKeywords: match.matchedKeywords,
+        });
+      }
+    } catch (err) {
+      setError('Could not reach the server. Please try again.');
+    } finally {
+      setIsSearching(false);
+      setTimeout(() => setIsTypesetting(false), 1200);
+    }
+  };
 
+  useEffect(() => {
+    if (searchEvent && searchEvent.query && searchEvent.query.trim()) {
+      handleSearchWithQuery(searchEvent.query);
+    }
+  }, [searchEvent]);
   const handleSearch = async () => {
     if (!searchQuery.trim()) return;
     setIsSearching(true);
@@ -92,58 +140,11 @@ export default function AccountabilitySearch({ activeState, lang }) {
 
   const data = searchData;
 
+
   return (
     <section className="editorial-story" style={{ position: 'relative' }}>
       <div className="section-flag">{getTranslation(lang, 'deepDive')}</div>
 
-      {/* Search Bar */}
-      <div style={{ marginBottom: '32px', display: 'flex', gap: '12px', alignItems: 'center' }}>
-        <input
-          type="text"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-          placeholder={activeState ? `Search accountability in ${activeState}...` : "Search any civic issue, department, or official..."}
-          style={{
-            flex: 1,
-            padding: '12px 16px',
-            fontFamily: 'Lora, serif',
-            fontSize: '1.1rem',
-            border: '2px solid var(--border-color)',
-            background: 'transparent',
-            outline: 'none',
-          }}
-        />
-        <button
-          onClick={handleSearch}
-          disabled={isSearching}
-          className="vintage-stamp stamp-blue"
-          style={{ padding: '12px 24px', background: 'transparent', whiteSpace: 'nowrap' }}
-        >
-          {isSearching ? 'SEARCHING...' : 'SEARCH'}
-        </button>
-      </div>
-
-      {/* Quick category chips */}
-      <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '32px' }}>
-        {['Exam Leak', 'Water Supply', 'Food Safety', 'Electricity', 'Health'].map(cat => (
-          <button
-            key={cat}
-            onClick={() => { setSearchQuery(cat); }}
-            style={{
-              padding: '4px 12px',
-              border: '1px solid var(--border-color)',
-              background: 'transparent',
-              fontFamily: 'Lora',
-              fontSize: '0.85rem',
-              cursor: 'pointer',
-              letterSpacing: '0.05em'
-            }}
-          >
-            [{cat}]
-          </button>
-        ))}
-      </div>
 
       {/* Error state */}
       {error && (
@@ -159,15 +160,25 @@ export default function AccountabilitySearch({ activeState, lang }) {
         </div>
       )}
 
+      {/* Loading state */}
+      {isSearching && (
+        <div style={{ padding: '64px 0', textAlign: 'center', borderTop: '1px solid var(--border-color)', borderBottom: '1px solid var(--border-color)' }}>
+          <div className="vintage-stamp stamp-blue" style={{ display: 'inline-block', fontSize: '1.5rem', animation: 'pulse 1.5s infinite' }}>
+            SEARCHING ARCHIVES...
+          </div>
+          <p style={{ fontFamily: 'Lora', fontStyle: 'italic', marginTop: '16px', color: 'var(--text-secondary)' }}>Retrieving official records and accountability chains...</p>
+        </div>
+      )}
+
       {/* Empty state */}
-      {!data && !noResults && !error && (
+      {!isSearching && !data && !noResults && !error && (
         <div style={{ padding: '48px 0', textAlign: 'center', fontFamily: 'Lora', fontStyle: 'italic', color: 'var(--text-secondary)', borderTop: '1px solid var(--border-color)', borderBottom: '1px solid var(--border-color)' }}>
           Search for any civic issue to see the full accountability record.
         </div>
       )}
 
       {/* Results */}
-      {data && (
+      {!isSearching && data && (
         <>
           <h3 className="story-headline" style={{ marginBottom: '24px', fontSize: '4.5rem', borderBottom: '6px solid var(--border-color)', paddingBottom: '16px' }}>
             {data.headline.split('').map((char, index) => (
@@ -272,5 +283,9 @@ export default function AccountabilitySearch({ activeState, lang }) {
       {isRtiOpen && <RtiModal onClose={() => setIsRtiOpen(false)} department={data?.department} official={data?.official} />}
       {isShareCardOpen && <ShareCard onClose={() => setIsShareCardOpen(false)} data={data} />}
     </section>
+
   );
+
 }
+
+

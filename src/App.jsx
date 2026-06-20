@@ -8,11 +8,14 @@ import CivicFeed from './components/CivicFeed'
 import { getTranslation, stateToLanguageMap } from './i18n'
 import { regionalImages } from './regionMap'
 
+
 function App() {
-  const [activeState, setActiveState] = useState(null); 
+  const [activeState, setActiveState] = useState(null);
   const [lang, setLang] = useState('en');
   const [pageTurn, setPageTurn] = useState(false);
-  
+  const [searchEvent, setSearchEvent] = useState(null);
+  const accountabilityRef = useRef(null);
+
   // Ink trail logic
   useEffect(() => {
     const handleMouseMove = (e) => {
@@ -31,7 +34,7 @@ function App() {
       }, 50);
 
       setTimeout(() => {
-        if(dot.parentNode) dot.parentNode.removeChild(dot);
+        if (dot.parentNode) dot.parentNode.removeChild(dot);
       }, 350);
     };
 
@@ -41,17 +44,17 @@ function App() {
 
   const handleStateSelect = (stateId, stateName) => {
     if (activeState === stateName) return; // Ignore if clicking same state
-    
+
     // Trigger page turn out
     setPageTurn(true);
-    
+
     setTimeout(() => {
       setActiveState(stateName);
       if (stateId) {
         const idUpper = stateId.replace('in-', '').toUpperCase();
         const newLang = stateToLanguageMap[idUpper] || stateToLanguageMap[stateId];
         if (newLang) setLang(newLang);
-        
+
         // Update Background
         const bgUrl = regionalImages[idUpper] || regionalImages['DL'];
         document.body.style.backgroundImage = `url(${bgUrl})`;
@@ -71,11 +74,11 @@ function App() {
       {/* Top Utility Strip */}
       <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 24px', borderBottom: '2px solid var(--border-color)', fontSize: '0.85rem', fontFamily: 'Lora', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
         <div className="lang-switcher">
-          <button onClick={() => setLang('en')} style={{fontWeight: lang==='en'?'bold':'normal', background:'none', border:'none', marginRight:'12px'}}>English</button>
-          <button onClick={() => setLang('hi')} className="hindi-text" style={{fontWeight: lang==='hi'?'bold':'normal', background:'none', border:'none', marginRight:'12px'}}>हिंदी</button>
-          <button onClick={() => setLang('mr')} className="hindi-text" style={{fontWeight: lang==='mr'?'bold':'normal', background:'none', border:'none', marginRight:'12px'}}>मराठी</button>
-          <button onClick={() => setLang('bn')} className="hindi-text" style={{fontWeight: lang==='bn'?'bold':'normal', background:'none', border:'none', marginRight:'12px'}}>বাংলা</button>
-          <button onClick={() => setLang('ta')} className="hindi-text" style={{fontWeight: lang==='ta'?'bold':'normal', background:'none', border:'none'}}>தமிழ்</button>
+          <button onClick={() => setLang('en')} style={{ fontWeight: lang === 'en' ? 'bold' : 'normal', background: 'none', border: 'none', marginRight: '12px' }}>English</button>
+          <button onClick={() => setLang('hi')} className="hindi-text" style={{ fontWeight: lang === 'hi' ? 'bold' : 'normal', background: 'none', border: 'none', marginRight: '12px' }}>हिंदी</button>
+          <button onClick={() => setLang('mr')} className="hindi-text" style={{ fontWeight: lang === 'mr' ? 'bold' : 'normal', background: 'none', border: 'none', marginRight: '12px' }}>मराठी</button>
+          <button onClick={() => setLang('bn')} className="hindi-text" style={{ fontWeight: lang === 'bn' ? 'bold' : 'normal', background: 'none', border: 'none', marginRight: '12px' }}>বাংলা</button>
+          <button onClick={() => setLang('ta')} className="hindi-text" style={{ fontWeight: lang === 'ta' ? 'bold' : 'normal', background: 'none', border: 'none' }}>தமிழ்</button>
         </div>
         <div style={{ fontFamily: 'Playfair Display SC', fontWeight: 'bold' }}>
           Vol. 1 &bull; 1947 Edition
@@ -87,16 +90,26 @@ function App() {
       {/* Page Turn Wrapper */}
       <div className={`page-container ${pageTurn ? 'page-turn-exit' : 'page-turn-enter'}`}>
         <div className="container" style={{ paddingTop: '24px' }}>
-          <Hero activeState={activeState} onStateSelect={handleStateSelect} lang={lang} />
-          
-          <div style={{ borderTop: '4px solid var(--border-color)', marginTop: '48px', paddingTop: '48px' }}>
-            <AccountabilitySearch activeState={activeState} lang={lang} />
+          <Hero
+            activeState={activeState}
+            onStateSelect={handleStateSelect}
+            lang={lang}
+            onSearch={(query) => {
+              setSearchEvent({ query, timestamp: Date.now() });
+              setTimeout(() => {
+                accountabilityRef.current?.scrollIntoView({ behavior: 'smooth' });
+              }, 100);
+            }}
+          />
+
+          <div ref={accountabilityRef} style={{ borderTop: '4px solid var(--border-color)', marginTop: '48px', paddingTop: '48px' }}>
+            <AccountabilitySearch activeState={activeState} lang={lang} searchEvent={searchEvent} />
           </div>
-          
+
           <div style={{ borderTop: '1px solid var(--border-color)', marginTop: '48px', paddingTop: '48px' }}>
             <StateFinancialHealth activeState={activeState} lang={lang} />
           </div>
-          
+
           <div style={{ borderTop: '2px solid var(--border-color)', marginTop: '48px', paddingTop: '48px' }}>
             <ProjectTracker activeState={activeState} lang={lang} />
           </div>
@@ -106,10 +119,10 @@ function App() {
           </div>
         </div>
 
-        <footer style={{ 
-          padding: '60px 0', 
-          textAlign: 'center', 
-          borderTop: '6px double var(--border-color)', 
+        <footer style={{
+          padding: '60px 0',
+          textAlign: 'center',
+          borderTop: '6px double var(--border-color)',
           marginTop: '80px',
           fontFamily: 'Playfair Display SC, serif',
           backgroundColor: 'transparent'
