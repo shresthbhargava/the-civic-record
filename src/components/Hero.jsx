@@ -8,9 +8,19 @@ export default function Hero({ activeState, onStateSelect, lang, onSearch }) {
   const today = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
   const hindiDate = "१४ कार्तिक, शक संवत १९४८";
   const [query, setQuery] = useState('');
+  const [todaysEdition, setTodaysEdition] = useState(null);
 
   const tags = ["[Exam Leak]", "[Water Supply]", "[Road Projects]", "[State Debt]", "[Food Safety]"];
-
+  useEffect(() => {
+    fetch('https://civicos-r2sf.onrender.com/api/v1/news/edition/today')
+        .then(res => res.json())
+        .then(data => {
+          if (data.success && data.data) {
+            setTodaysEdition(data.data);
+          }
+        })
+        .catch(err => console.warn('Edition fetch failed:', err));
+  }, []);
   return (
     <header className="newspaper-hero">
       <div className="masthead-section border-bottom-thick">
@@ -30,7 +40,40 @@ export default function Hero({ activeState, onStateSelect, lang, onSearch }) {
       </div>
 
       {!activeState ? (
+
         <div className="map-hero-section">
+          {todaysEdition && (
+              <div style={{
+                marginTop: '32px',
+                padding: '16px 24px',
+                borderTop: '4px double var(--border-color)',
+                borderBottom: '4px double var(--border-color)',
+                textAlign: 'center'
+              }}>
+    <span style={{
+      fontFamily: 'Playfair Display SC',
+      fontSize: '0.8rem',
+      letterSpacing: '0.2em',
+      color: 'var(--text-secondary)'
+    }}>
+      TODAY'S FRONT PAGE — {new Date(todaysEdition.editionDate).toLocaleDateString('en-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+    </span>
+                <h2 style={{
+                  fontFamily: 'Playfair Display SC',
+                  fontSize: '2.5rem',
+                  lineHeight: '1.1',
+                  margin: '8px 0',
+                  color: 'var(--text-primary)'
+                }}>
+                  {todaysEdition.headline}
+                </h2>
+                {todaysEdition.stories?.[0]?.sourceName && (
+                    <span style={{ fontFamily: 'Lora', fontStyle: 'italic', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
+        — {todaysEdition.stories[0].sourceName}
+      </span>
+                )}
+              </div>
+          )}
 
           <div className="search-section" style={{ marginBottom: '40px' }}>
             <div className="search-input-wrapper">
