@@ -1,105 +1,190 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Modal from './Modal';
 import './ProjectTracker.css';
 import { getTranslation } from '../i18n';
 
+const API_BASE = 'https://civicos-r2sf.onrender.com';
+
 export default function ProjectTracker({ activeState, lang }) {
-  const [activeProject, setActiveProject] = useState(null);
+  const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [selectedProject, setSelectedProject] = useState(null);
 
-  const projects = [
-    {
-      id: "PRJ-992",
-      title: "Expressway Expansion Phase 1",
-      ministry: "MoRTH",
-      budget: "₹1,00,000 Cr",
-      status: "ON SCHEDULE",
-      statusColor: 'var(--accent-green)',
-      notes: "Toll infrastructure pending.",
-      state: "Maharashtra"
-    },
-    {
-      id: "PRJ-410",
-      title: "Jal Jeevan Mission Pipeline",
-      ministry: "Jal Shakti",
-      budget: "₹3,60,000 Cr",
-      status: "DELAYED",
-      statusColor: 'var(--accent-red)',
-      notes: "Awaiting state clearances.",
-      state: "Uttar Pradesh"
-    },
-    {
-      id: "PRJ-881",
-      title: "Urban Broadband Network",
-      ministry: "MeitY",
-      budget: "₹61,000 Cr",
-      status: "AUDIT PENDING",
-      statusColor: 'var(--accent-gold)',
-      notes: "Final auditing in progress.",
-      state: "Karnataka"
+  useEffect(() => {
+    setLoading(true);
+    setError(null);
+    fetch(`${API_BASE}/api/v1/projects/active`)
+        .then(res => {
+          if (!res.ok) throw new Error('Failed to fetch projects');
+          return res.json();
+        })
+        .then(data => {
+          if (data.success && data.data?.content) {
+            setProjects(data.data.content);
+          }
+        })
+        .catch(err => {
+          setError('Could not load project records. The works department is unreachable.');
+        })
+        .finally(() => setLoading(false));
+  }, []);
+
+  const displayProjects = activeState
+      ? projects.filter(p => p.stateName === activeState)
+      : projects;
+
+  const getStatusStamp = (status) => {
+    switch (status) {
+      case 'ACTIVE': return { label: 'IN PROGRESS', cls: 'stamp-blue' };
+      case 'COMPLETED': return { label: 'COMPLETED', cls: 'stamp-green' };
+      case 'ON_HOLD': return { label: 'ON HOLD', cls: 'stamp-red' };
+      default: return { label: status || 'UNKNOWN', cls: 'stamp-blue' };
     }
-  ];
+  };
 
-  const filteredProjects = activeState 
-    ? projects.filter(p => p.state === activeState)
-    : projects;
+  const getProgressColor = (pct) => {
+    if (pct >= 75) return 'var(--accent-green)';
+    if (pct >= 40) return 'var(--accent-gold)';
+    return 'var(--accent-red)';
+  };
+
+  const formatDate = (dateStr) => {
+    if (!dateStr) return 'TBD';
+    return new Date(dateStr).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+  };
+
+  if (loading) {
+    return (
+        <section className="editorial-story">
+          <div className="section-flag">{getTranslation(lang, 'projectTracker') || 'NATIONAL PROJECT TRACKER'}</div>
+          <div style={{ padding: '48px 0', textAlign: 'center' }}>
+            <div className="vintage-stamp stamp-blue" style={{ display: 'inline-block', animation: 'pulse 1.5s infinite' }}>
+              SURVEYING WORKSITES...
+            </div>
+            <p style={{ fontFamily: 'Lora', fontStyle: 'italic', marginTop: '16px', color: 'var(--text-secondary)' }}>
+              Retrieving project progress from field offices...
+            </p>
+          </div>
+        </section>
+    );
+  }
+
+  if (error) {
+    return (
+        <section className="editorial-story">
+          <div className="section-flag">{getTranslation(lang, 'projectTracker') || 'NATIONAL PROJECT TRACKER'}</div>
+          <div style={{ padding: '24px', border: '2px solid #8B0000', color: '#8B0000', fontFamily: 'Lora' }}>
+            &#9888; {error}
+          </div>
+        </section>
+    );
+  }
 
   return (
-    <section className="classifieds-section" style={{ breakInside: 'avoid' }}>
-      <div className="section-flag">{getTranslation(lang, 'publicTenders')}</div>
-      
-      <div className="classifieds-layout">
-        <div className="classified-intro border-right-thin">
-          <p style={{fontStyle: 'italic', marginBottom: '16px'}}>
-            A comprehensive listing of ongoing infrastructure and development projects {activeState ? `in ${activeState}` : 'nationwide'}. Information verified via official ministry channels.
-          </p>
-          <div style={{ border: '2px solid var(--border-color)', padding: '16px', background: 'rgba(0,0,0,0.02)' }}>
-            <h4 style={{fontFamily: 'Playfair Display SC, serif', marginBottom: '8px'}}>NOTICE TO CONTRACTORS</h4>
-            <p style={{fontSize: '0.85rem'}}>All project discrepancies must be reported to the central oversight committee within 14 business days of publication.</p>
-          </div>
-        </div>
+      <section className="editorial-story">
+        <div className="section-flag">{getTranslation(lang, 'projectTracker') || 'NATIONAL PROJECT TRACKER'}</div>
 
-        <div className="classified-list">
-          {filteredProjects.length > 0 ? filteredProjects.map((project, idx) => (
-            <div 
-              className="classified-item border-bottom-thin" 
-              key={idx} 
-              onClick={() => setActiveProject(project)}
-              style={{ cursor: 'var(--cursor-stamp)', transition: 'background 0.2s', padding: '16px 0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
-              onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(0,0,0,0.03)'}
-              onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
-            >
-              <div>
-                <div className="classified-id" style={{ fontFamily: 'monospace', fontSize: '0.8rem' }}>Ref. {project.id}</div>
-                <h4 className="classified-title" style={{ fontFamily: 'Playfair Display SC', fontSize: '1.4rem' }}>{project.title}</h4>
-                <p className="classified-desc" style={{ fontSize: '0.9rem' }}>
-                  <strong>Ministry:</strong> {project.ministry} &bull; <strong>Budget:</strong> {project.budget}
+        <p style={{ fontFamily: 'Lora', fontStyle: 'italic', color: 'var(--text-secondary)', marginBottom: '24px', fontSize: '0.95rem' }}>
+          Tracking {displayProjects.length} active government project{displayProjects.length !== 1 ? 's' : ''} across India
+        </p>
+
+        {displayProjects.length === 0 ? (
+            <div style={{ padding: '48px 0', textAlign: 'center', fontFamily: 'Lora', fontStyle: 'italic', color: 'var(--text-secondary)', borderTop: '1px solid var(--border-color)', borderBottom: '1px solid var(--border-color)' }}>
+              {activeState ? `No active projects tracked in ${activeState}.` : 'No active projects being tracked at this time.'}
+            </div>
+        ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              {displayProjects.map((project) => {
+                const stamp = getStatusStamp(project.status);
+                const pct = project.completionPercentage || 0;
+                return (
+                    <div
+                        key={project.id}
+                        onClick={() => setSelectedProject(project)}
+                        style={{
+                          padding: '20px',
+                          border: '2px solid var(--border-color)',
+                          cursor: 'var(--cursor-stamp)',
+                          transition: 'all 0.2s',
+                          background: 'rgba(0,0,0,0.01)',
+                          position: 'relative'
+                        }}
+                        onMouseEnter={e => { e.currentTarget.style.background = 'rgba(0,0,0,0.04)'; e.currentTarget.style.borderColor = 'var(--text-primary)'; }}
+                        onMouseLeave={e => { e.currentTarget.style.background = 'rgba(0,0,0,0.01)'; e.currentTarget.style.borderColor = 'var(--border-color)'; }}
+                    >
+                      <div className={`vintage-stamp ${stamp.cls}`} style={{ position: 'absolute', top: '12px', right: '12px', fontSize: '0.7rem' }}>
+                        {stamp.label}
+                      </div>
+
+                      <h4 style={{ fontFamily: 'Playfair Display SC', fontSize: '1.3rem', marginBottom: '8px', paddingRight: '120px', lineHeight: '1.2' }}>
+                        {project.title?.toUpperCase()}
+                      </h4>
+
+                      <div style={{ display: 'flex', gap: '24px', fontFamily: 'Lora', fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '12px', flexWrap: 'wrap' }}>
+                        <span>Ministry: <strong style={{ color: 'var(--text-primary)' }}>{project.ministry}</strong></span>
+                        <span>State: <strong style={{ color: 'var(--text-primary)' }}>{project.stateName}</strong></span>
+                      </div>
+
+                      {project.description && (
+                          <p style={{ fontFamily: 'Lora', fontSize: '0.9rem', lineHeight: '1.6', marginBottom: '16px', color: 'var(--text-secondary)' }}>
+                            {project.description.length > 200 ? project.description.substring(0, 200) + '...' : project.description}
+                          </p>
+                      )}
+
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                        <div style={{ flex: 1, height: '8px', background: 'rgba(0,0,0,0.1)', border: '1px solid var(--border-color)' }}>
+                          <div style={{ height: '100%', width: `${Math.min(pct, 100)}%`, background: getProgressColor(pct), transition: 'width 1s ease' }} />
+                        </div>
+                        <span style={{ fontFamily: 'Playfair Display SC', fontWeight: 'bold', fontSize: '0.9rem', minWidth: '40px' }}>
+                    {pct.toFixed(0)}%
+                  </span>
+                      </div>
+
+                      <div style={{ display: 'flex', gap: '24px', fontFamily: 'Lora', fontSize: '0.8rem', color: 'var(--text-secondary)', marginTop: '8px', flexWrap: 'wrap' }}>
+                        <span>Budget: {'\u20B9'}{project.totalBudgetCr?.toLocaleString('en-IN')} Cr</span>
+                        <span>Spent: {'\u20B9'}{project.spentCr?.toLocaleString('en-IN')} Cr</span>
+                        <span>Target: {formatDate(project.targetCompletionDate)}</span>
+                      </div>
+                    </div>
+                );
+              })}
+            </div>
+        )}
+
+        <Modal
+            isOpen={!!selectedProject}
+            onClose={() => setSelectedProject(null)}
+            title={selectedProject ? `PROJECT DOSSIER \u2014 ${selectedProject.title?.toUpperCase()}` : ''}
+            stampType="stamp-blue"
+        >
+          {selectedProject && (
+              <div style={{ fontFamily: 'Lora' }}>
+                {selectedProject.description && (
+                    <p style={{ marginBottom: '16px', lineHeight: '1.6' }}>{selectedProject.description}</p>
+                )}
+                <p style={{ marginBottom: '12px' }}><strong>Implementing Agency:</strong> {selectedProject.implementingAgency || 'N/A'}</p>
+                <p style={{ marginBottom: '12px' }}><strong>Ministry:</strong> {selectedProject.ministry}</p>
+                <p style={{ marginBottom: '12px' }}><strong>State:</strong> {selectedProject.stateName} ({selectedProject.stateCode})</p>
+                <p style={{ marginBottom: '12px' }}><strong>Total Budget:</strong> {'\u20B9'}{selectedProject.totalBudgetCr?.toLocaleString('en-IN')} Crore</p>
+                <p style={{ marginBottom: '12px' }}><strong>Expenditure:</strong> {'\u20B9'}{selectedProject.spentCr?.toLocaleString('en-IN')} Crore</p>
+                <p style={{ marginBottom: '12px' }}><strong>Start Date:</strong> {formatDate(selectedProject.startDate)}</p>
+                <p style={{ marginBottom: '12px' }}><strong>Target Completion:</strong> {formatDate(selectedProject.targetCompletionDate)}</p>
+                <div style={{ marginBottom: '12px' }}>
+                  <strong>Completion: {selectedProject.completionPercentage?.toFixed(1)}%</strong>
+                  <div style={{ marginTop: '8px', height: '10px', background: 'rgba(0,0,0,0.1)', border: '1px solid var(--border-color)' }}>
+                    <div style={{ height: '100%', width: `${Math.min(selectedProject.completionPercentage || 0, 100)}%`, background: getProgressColor(selectedProject.completionPercentage || 0) }} />
+                  </div>
+                </div>
+                <p style={{ marginBottom: '12px' }}>
+                  <strong>Status:</strong>{' '}
+                  <span className={`vintage-stamp ${getStatusStamp(selectedProject.status).cls}`} style={{ fontSize: '0.9rem', padding: '2px 10px' }}>
+                {getStatusStamp(selectedProject.status).label}
+              </span>
                 </p>
               </div>
-              <div className="vintage-stamp" style={{ color: project.statusColor, transform: 'rotate(-2deg)' }}>
-                {project.status}
-              </div>
-            </div>
-          )) : (
-            <p style={{fontStyle: 'italic', padding: '16px'}}>No active public tenders listed for this region at this time.</p>
           )}
-        </div>
-      </div>
-
-      <Modal 
-        isOpen={!!activeProject} 
-        onClose={() => setActiveProject(null)}
-        title={activeProject?.title}
-        subtitle={`Project Reference: ${activeProject?.id}`}
-        stampType={activeProject?.status}
-      >
-        <p><strong>Executing Ministry:</strong> {activeProject?.ministry}</p>
-        <p><strong>Allocated Budget:</strong> {activeProject?.budget}</p>
-        <p><strong>Field Notes:</strong> {activeProject?.notes}</p>
-        <div style={{marginTop: '24px', padding: '16px', border: '1px dashed var(--border-color)', background: 'rgba(0,0,0,0.03)'}}>
-          <h4 style={{fontFamily: 'Playfair Display SC', marginBottom: '8px'}}>Citizen Oversight</h4>
-          <p style={{fontSize: '0.9rem'}}>This project is subject to mandatory public auditing under the Transparency in Infrastructure Act.</p>
-        </div>
-      </Modal>
-    </section>
+        </Modal>
+      </section>
   );
 }

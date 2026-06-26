@@ -64,6 +64,8 @@ export default function AccountabilitySearch({ activeState, lang, searchEvent })
           actions: match.citizenActions,
           acts: match.relevantActs,
           matchedKeywords: match.matchedKeywords,
+          complaintPortalUrl: match.responsibleDepartment.complaintPortalUrl || null,
+          websiteUrl: match.responsibleDepartment.websiteUrl || null,
         });
       }
     } catch (err) {
@@ -256,19 +258,51 @@ export default function AccountabilitySearch({ activeState, lang, searchEvent })
               </div>
             )}
 
+            {/* Official Portal Links */}
+            {data.complaintPortalUrl && (
+                <div style={{ marginBottom: '24px', breakInside: 'avoid' }}>
+                  <a
+                      href={data.complaintPortalUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="vintage-stamp stamp-red"
+                      style={{ display: 'block', width: '100%', textAlign: 'center', background: 'transparent', textDecoration: 'none', color: 'inherit', padding: '12px', marginBottom: '8px', fontSize: '0.9rem' }}
+                  >
+                    FILE OFFICIAL COMPLAINT &#8599;
+                  </a>
+                  <p style={{ fontFamily: 'Lora', fontSize: '0.75rem', fontStyle: 'italic', color: 'var(--text-secondary)', textAlign: 'center' }}>
+                    Redirects to {data.department}&#39;s official complaint portal
+                  </p>
+                </div>
+            )}
+
+            {data.websiteUrl && (
+                <div style={{ marginBottom: '24px', breakInside: 'avoid' }}>
+                  <a
+                      href={data.websiteUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="vintage-stamp stamp-blue"
+                      style={{ display: 'block', width: '100%', textAlign: 'center', background: 'transparent', textDecoration: 'none', color: 'inherit', padding: '12px', marginBottom: '8px', fontSize: '0.9rem' }}
+                  >
+                    VISIT DEPARTMENT PORTAL &#8599;
+                  </a>
+                </div>
+            )}
+
             {/* Action buttons */}
             <div style={{ breakInside: 'avoid' }}>
               <button
-                className="vintage-stamp stamp-blue"
-                style={{ width: '100%', marginBottom: '12px', textAlign: 'center', background: 'transparent' }}
-                onClick={(e) => handleStampClick(e, () => setIsRtiOpen(true))}
+                  className="vintage-stamp stamp-blue"
+                  style={{ width: '100%', marginBottom: '12px', textAlign: 'center', background: 'transparent' }}
+                  onClick={(e) => handleStampClick(e, () => setIsRtiOpen(true))}
               >
                 GENERATE RTI FORM
               </button>
               <button
-                className="vintage-stamp stamp-red"
-                style={{ width: '100%', textAlign: 'center', background: 'transparent' }}
-                onClick={(e) => handleStampClick(e, () => setIsShareCardOpen(true))}
+                  className="vintage-stamp stamp-red"
+                  style={{ width: '100%', textAlign: 'center', background: 'transparent' }}
+                  onClick={(e) => handleStampClick(e, () => setIsShareCardOpen(true))}
               >
                 SHARE CLIPPING
               </button>
