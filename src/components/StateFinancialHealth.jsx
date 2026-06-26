@@ -133,7 +133,7 @@ export default function StateFinancialHealth({ activeState, lang }) {
                             >
                                 <span style={{ fontWeight: 'bold', fontFamily: 'Playfair Display' }}>{state.stateName}</span>
                                 <span>{formatCurrency(state.totalDebtCr)}</span>
-                                <span>{formatCurrency(state.totalRevenueCr)}</span>
+                                <span>{formatCurrency(state.revenueReceiptsCr)}</span>
                                 <span style={{ color: alert.color }}>{formatCurrency(state.fiscalDeficitCr)}</span>
                                 <span style={{ fontWeight: 'bold', color: alert.color }}>{state.debtToGdpRatio.toFixed(1)}%</span>
                                 <span>
@@ -164,7 +164,7 @@ export default function StateFinancialHealth({ activeState, lang }) {
                     <div style={{ fontFamily: 'Lora' }}>
                         <p style={{ marginBottom: '12px' }}><strong>Financial Year:</strong> {selectedState.financialYear}</p>
                         <p style={{ marginBottom: '12px' }}><strong>Total Outstanding Debt:</strong> {'\u20B9'}{selectedState.totalDebtCr?.toLocaleString('en-IN')} Crore</p>
-                        <p style={{ marginBottom: '12px' }}><strong>Total Revenue:</strong> {'\u20B9'}{selectedState.totalRevenueCr?.toLocaleString('en-IN')} Crore</p>
+                        <p style={{ marginBottom: '12px' }}><strong>Total Revenue:</strong> {'\u20B9'}{selectedState.revenueReceiptsCr?.toLocaleString('en-IN')} Crore</p>
                         <p style={{ marginBottom: '12px' }}><strong>Fiscal Deficit:</strong> {'\u20B9'}{selectedState.fiscalDeficitCr?.toLocaleString('en-IN')} Crore</p>
                         <p style={{ marginBottom: '12px' }}><strong>Debt-to-GDP Ratio:</strong> {selectedState.debtToGdpRatio?.toFixed(1)}%</p>
                         <p style={{ marginBottom: '12px' }}>
