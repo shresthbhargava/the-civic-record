@@ -20,9 +20,9 @@ export default function ProjectTracker({ activeState, lang }) {
           return res.json();
         })
         .then(data => {
-          if (data.success && data.data?.content) {
-            setProjects(data.data.content);
-          }
+            if (data.success && Array.isArray(data.data)) {
+                setProjects(data.data);
+            }
         })
         .catch(err => {
           setError('Could not load project records. The works department is unreachable.');
@@ -30,18 +30,17 @@ export default function ProjectTracker({ activeState, lang }) {
         .finally(() => setLoading(false));
   }, []);
 
-  const displayProjects = activeState
-      ? projects.filter(p => p.stateName === activeState)
-      : projects;
+  const displayProjects = projects;
 
   const getStatusStamp = (status) => {
-    switch (status) {
-      case 'ACTIVE': return { label: 'IN PROGRESS', cls: 'stamp-blue' };
-      case 'COMPLETED': return { label: 'COMPLETED', cls: 'stamp-green' };
-      case 'ON_HOLD': return { label: 'ON HOLD', cls: 'stamp-red' };
-      default: return { label: status || 'UNKNOWN', cls: 'stamp-blue' };
-    }
-  };
+        switch (status) {
+            case 'ACTIVE':
+            case 'IN_PROGRESS': return { label: 'IN PROGRESS', cls: 'stamp-blue' };
+            case 'COMPLETED': return { label: 'COMPLETED', cls: 'stamp-green' };
+            case 'ON_HOLD': return { label: 'ON HOLD', cls: 'stamp-red' };
+            default: return { label: status || 'UNKNOWN', cls: 'stamp-blue' };
+        }
+    };
 
   const getProgressColor = (pct) => {
     if (pct >= 75) return 'var(--accent-green)';
@@ -118,12 +117,12 @@ export default function ProjectTracker({ activeState, lang }) {
                       </div>
 
                       <h4 style={{ fontFamily: 'Playfair Display SC', fontSize: '1.3rem', marginBottom: '8px', paddingRight: '120px', lineHeight: '1.2' }}>
-                        {project.title?.toUpperCase()}
+                        {project.name?.toUpperCase()}
                       </h4>
 
                       <div style={{ display: 'flex', gap: '24px', fontFamily: 'Lora', fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '12px', flexWrap: 'wrap' }}>
                         <span>Ministry: <strong style={{ color: 'var(--text-primary)' }}>{project.ministry}</strong></span>
-                        <span>State: <strong style={{ color: 'var(--text-primary)' }}>{project.stateName}</strong></span>
+                          {project.stateCode && <span>State: <strong style={{ color: 'var(--text-primary)' }}>{project.stateCode}</strong></span>}
                       </div>
 
                       {project.description && (
@@ -155,7 +154,7 @@ export default function ProjectTracker({ activeState, lang }) {
         <Modal
             isOpen={!!selectedProject}
             onClose={() => setSelectedProject(null)}
-            title={selectedProject ? `PROJECT DOSSIER \u2014 ${selectedProject.title?.toUpperCase()}` : ''}
+            title={selectedProject ? `PROJECT DOSSIER \u2014 ${selectedProject.name?.toUpperCase()}` : ''}
             stampType="stamp-blue"
         >
           {selectedProject && (
