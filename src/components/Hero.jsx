@@ -100,22 +100,35 @@ export default function Hero({ activeState, onStateSelect, lang, onSearch }) {
                 borderBottom: '4px double var(--border-color)',
                 textAlign: 'center'
               }}>
-              <span style={{
-                fontFamily: 'Playfair Display SC',
-                fontSize: '0.8rem',
-                letterSpacing: '0.2em',
-                color: 'var(--text-secondary)'
-              }}>
-                TODAY'S FRONT PAGE — {new Date(todaysEdition.editionDate).toLocaleDateString('en-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
-              </span>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '16px' }}>
                 <span style={{
                   fontFamily: 'Playfair Display SC',
                   fontSize: '0.8rem',
                   letterSpacing: '0.2em',
                   color: 'var(--text-secondary)'
                 }}>
-                TODAY'S FRONT PAGE — {new Date(todaysEdition.editionDate).toLocaleDateString('en-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
-              </span>
+                  TODAY'S FRONT PAGE — {new Date(todaysEdition.editionDate).toLocaleDateString('en-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+                </span>
+                  <button
+                      onClick={refreshEdition}
+                      style={{
+                        background: 'none',
+                        border: '1px solid var(--border-color)',
+                        color: 'var(--text-secondary)',
+                        fontFamily: 'Playfair Display SC',
+                        fontSize: '0.7rem',
+                        letterSpacing: '0.15em',
+                        padding: '4px 12px',
+                        cursor: 'pointer',
+                        textTransform: 'uppercase',
+                        transition: 'all 0.2s ease'
+                      }}
+                      onMouseEnter={e => { e.target.style.borderColor = 'var(--text-primary)'; e.target.style.color = 'var(--text-primary)'; }}
+                      onMouseLeave={e => { e.target.style.borderColor = 'var(--border-color)'; e.target.style.color = 'var(--text-secondary)'; }}
+                  >
+                    REFRESH EDITION
+                  </button>
+                </div>
                 <h2 style={{
                   fontFamily: 'Playfair Display SC',
                   fontSize: '2.5rem',
