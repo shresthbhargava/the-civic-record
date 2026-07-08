@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import IndiaMap from './IndiaMap';
 import './Hero.css';
 import { getTranslation } from '../i18n';
+import ComplaintTracker from './ComplaintTracker';
 
 
 export default function Hero({ activeState, onStateSelect, lang, onSearch }) {
@@ -9,6 +10,8 @@ export default function Hero({ activeState, onStateSelect, lang, onSearch }) {
   const hindiDate = "१४ कार्तिक, शक संवत १९४८";
   const [query, setQuery] = useState('');
   const [todaysEdition, setTodaysEdition] = useState(null);
+  const [showTracker, setShowTracker] = useState(false);
+  {showTracker && <ComplaintTracker onClose={() => setShowTracker(false)} />}
 
   const tags = ["[Exam Leak]", "[Water Supply]", "[Road Projects]", "[State Debt]", "[Food Safety]"];
   useEffect(() => {
@@ -51,6 +54,13 @@ export default function Hero({ activeState, onStateSelect, lang, onSearch }) {
                 placeholder={getTranslation(lang, 'searchPlaceholderNat')}
               />
               <button className="search-btn" onClick={() => onSearch?.(query)}>{getTranslation(lang, 'searchBtn')}</button>
+              <button
+                  className="search-btn"
+                  style={{ marginLeft: '12px', background: 'var(--accent-color)' }}
+                  onClick={() => setShowTracker(true)}
+              >
+                📋 TRACK COMPLAINT
+              </button>
             </div>
 
             <div style={{ marginTop: '16px', display: 'flex', justifyContent: 'center', gap: '12px', flexWrap: 'wrap' }}>
@@ -123,6 +133,13 @@ export default function Hero({ activeState, onStateSelect, lang, onSearch }) {
             />
             <button className="search-btn" onClick={() => onSearch?.(query)}>
               {getTranslation(lang, 'searchBtn')}
+            </button>
+            <button
+                className="search-btn"
+                style={{ marginLeft: '12px', background: 'var(--accent-color)' }}
+                onClick={() => setShowTracker(true)}
+            >
+              📋 TRACK COMPLAINT
             </button>
           </div>
 
