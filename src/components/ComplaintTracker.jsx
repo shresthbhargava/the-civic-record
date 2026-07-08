@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 
 const API_BASE = 'https://civicos-r2sf.onrender.com';
 
@@ -15,6 +16,12 @@ export default function ComplaintTracker({ isOpen, onClose }) {
   const [loading, setLoading] = useState(false);
   const [complaint, setComplaint] = useState(null);
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    if (isOpen) document.body.style.overflow = 'hidden';
+    else document.body.style.overflow = '';
+    return () => { document.body.style.overflow = ''; };
+  }, [isOpen]);
 
   const handleClose = () => {
     setTrackingId('');
@@ -71,7 +78,7 @@ export default function ComplaintTracker({ isOpen, onClose }) {
   const currentStep = complaint ? getStatusStepIndex(complaint.status) : -1;
   const isRejected = complaint?.status === 'REJECTED';
 
-  return (
+  return createPortal(
     <div style={overlayStyle} onClick={handleClose}>
       <div style={modalStyle} onClick={(e) => e.stopPropagation()}>
         {/* Header */}
@@ -254,7 +261,8 @@ export default function ComplaintTracker({ isOpen, onClose }) {
           )}
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
 
