@@ -3,12 +3,13 @@ import React, { useState, useEffect, useRef } from 'react';
 import Modal from './Modal';
 import RtiModal from './RtiModal';
 import ShareCard from './ShareCard';
+import ComplaintSubmissionForm from './ComplaintSubmissionForm';
 import './AccountabilitySearch.css';
 import { getTranslation } from '../i18n';
 
 const API_BASE = 'https://civicos-r2sf.onrender.com';
 
-export default function AccountabilitySearch({ activeState, lang, searchEvent }) {
+export default function AccountabilitySearch({ activeState, lang, searchEvent ,setComplaintModal}) {
   const [modalData, setModalData] = useState(null);
   const [isTypesetting, setIsTypesetting] = useState(false);
   const [isRtiOpen, setIsRtiOpen] = useState(false);
@@ -18,6 +19,9 @@ export default function AccountabilitySearch({ activeState, lang, searchEvent })
   const [searchData, setSearchData] = useState(null);
   const [noResults, setNoResults] = useState(false);
   const [error, setError] = useState(null);
+  const [complaintModal, setComplaintModal] = useState({
+    open: false, categoryCode: '', categoryName: '', departmentCode: '', departmentName: ''
+  });
 
   const stateCodeMap = {
     'Maharashtra': 'MH', 'Delhi': 'DL', 'Karnataka': 'KA',
@@ -49,6 +53,10 @@ export default function AccountabilitySearch({ activeState, lang, searchEvent })
       } else {
         const match = data.data.matches[0];
         setSearchData({
+          categoryCode: match.categoryCode || '',
+          categoryName: match.categoryName,
+          departmentCode: match.responsibleDepartment.code || '',
+          departmentName: match.responsibleDepartment.name,
           headline: `${match.categoryName.toUpperCase()} — ${match.responsibleDepartment.name.toUpperCase()}`,
           department: match.responsibleDepartment.name,
           jurisdiction: match.responsibleDepartment.jurisdictionLevel,
@@ -103,6 +111,8 @@ export default function AccountabilitySearch({ activeState, lang, searchEvent })
       } else {
         const match = data.data.matches[0];
         setSearchData({
+          categoryCode: match.categoryCode,
+          categoryName: match.categoryName,
           headline: `${match.categoryName.toUpperCase()} — ${match.responsibleDepartment.name.toUpperCase()}`,
           department: match.responsibleDepartment.name,
           jurisdiction: match.responsibleDepartment.jurisdictionLevel,
@@ -141,6 +151,7 @@ export default function AccountabilitySearch({ activeState, lang, searchEvent })
   };
 
   const data = searchData;
+
 
 
   return (
@@ -259,22 +270,39 @@ export default function AccountabilitySearch({ activeState, lang, searchEvent })
             )}
 
             {/* Official Portal Links */}
-            {data.complaintPortalUrl && (
-                <div style={{ marginBottom: '24px', breakInside: 'avoid' }}>
+            {/* Complaint Actions */}
+            <div style={{ marginBottom: '24px', breakInside: 'avoid' }}>
+              <button
+                  onClick={() => setComplaintModal({
+                    open: true,
+                    categoryCode: data.categoryCode,
+                    categoryName: data.department,
+                    departmentCode: data.departmentCode,
+                    departmentName: data.department,
+                  })}
+                  style={{ display: 'block', width: '100%', textAlign: 'center', background: '#00ff88', border: 'none', color: '#0d1117', padding: '12px', marginBottom: '8px', fontSize: '0.85rem', borderRadius: '6px', cursor: 'pointer', fontWeight: 700, fontFamily: 'inherit' }}
+              >
+                FILE COMPLAINT VIA CIVICOS
+              </button>
+              {data.complaintPortalUrl && (
                   <a
                       href={data.complaintPortalUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="vintage-stamp stamp-red"
-                      style={{ display: 'block', width: '100%', textAlign: 'center', background: 'transparent', textDecoration: 'none', color: 'inherit', padding: '12px', marginBottom: '8px', fontSize: '0.9rem' }}
+                      style={{ display: 'block', width: '100%', textAlign: 'center', background: 'transparent', border: '1px solid #ff4757', color: '#ff4757', padding: '10px', fontSize: '0.8rem', borderRadius: '6px', textDecoration: 'none', fontWeight: 600, fontFamily: 'inherit' }}
                   >
-                    FILE OFFICIAL COMPLAINT &#8599;
+                    FILE ON OFFICIAL PORTAL &#8599;
                   </a>
-                  <p style={{ fontFamily: 'Lora', fontSize: '0.75rem', fontStyle: 'italic', color: 'var(--text-secondary)', textAlign: 'center' }}>
-                    Redirects to {data.department}&#39;s official complaint portal
-                  </p>
-                </div>
-            )}
+              )}
+            </div>
+            <ComplaintSubmissionForm
+                isOpen={complaintModal.open}
+                onClose={() => setComplaintModal(prev => ({ ...prev, open: false }))}
+                categoryCode={complaintModal.categoryCode}
+                categoryName={complaintModal.categoryName}
+                departmentCode={complaintModal.departmentCode}
+                departmentName={complaintModal.departmentName}
+            />
 
             {data.websiteUrl && (
                 <div style={{ marginBottom: '24px', breakInside: 'avoid' }}>
