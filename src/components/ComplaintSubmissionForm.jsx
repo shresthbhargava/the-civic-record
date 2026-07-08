@@ -209,18 +209,13 @@ export default function ComplaintSubmissionForm({ isOpen, onClose, categoryCode,
               </div>
           ) : (
               /* Form State */
-              <form onSubmit={handleSubmit} style={{ padding: '20px 24px 24px' }}>
-                {/* Pre-filled context */}
-                <div style={contextBanner}>
-                  <div style={contextTag}>
-                    <span style={{ color: '#8892b0', fontSize: '0.7rem', textTransform: 'uppercase' }}>Category</span>
-                    <span style={{ color: '#fff', fontSize: '0.85rem' }}>{categoryName || categoryCode}</span>
-                  </div>
-                  <div style={contextTag}>
-                    <span style={{ color: '#8892b0', fontSize: '0.7rem', textTransform: 'uppercase' }}>Department</span>
-                    <span style={{ color: '#fff', fontSize: '0.85rem' }}>{departmentName || departmentCode}</span>
-                  </div>
-                </div>
+              <form onSubmit={handleSubmit} style={{
+                padding: '20px 24px 0',
+                flex: 1,
+                overflowY: 'auto',
+                display: 'flex',
+                flexDirection: 'column',
+              }}>
 
                 {/* Description */}
                 <div style={fieldGroup}>
@@ -297,8 +292,16 @@ export default function ComplaintSubmissionForm({ isOpen, onClose, categoryCode,
                     </div>
                 )}
 
-                {/* Actions */}
-                <div style={{ display: 'flex', gap: '12px', marginTop: '20px' }}>
+                {/* Spacer to push buttons to bottom if content is short */}
+                <div style={{ flex: 1 }} />
+
+                {/* Actions — pinned at bottom */}
+                <div style={{
+                  display: 'flex', gap: '12px',
+                  padding: '16px 24px 24px',
+                  flexShrink: 0,
+                  borderTop: '1px solid #21262d',
+                }}>
                   <button
                       type="button"
                       onClick={handleClose}
@@ -333,16 +336,17 @@ const overlayStyle = {
   background: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(4px)',
   display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000,
 };
-
 const modalStyle = {
   background: '#0d1117', border: '1px solid #21262d', borderRadius: '12px',
-  width: '90%', maxWidth: '560px', maxHeight: '85vh', overflow: 'auto',
+  width: '90%', maxWidth: '560px', maxHeight: '90vh',
+  display: 'flex', flexDirection: 'column',
   boxShadow: '0 25px 60px rgba(0,0,0,0.5)', position: 'relative',
 };
 
 const headerStyle = {
   display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start',
   padding: '20px 24px 16px', borderBottom: '1px solid #21262d',
+  flexShrink: 0,
 };
 
 const closeBtnStyle = {
