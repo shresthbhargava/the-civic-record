@@ -23,6 +23,16 @@ export default function Hero({ activeState, onStateSelect, lang, onSearch }) {
         })
         .catch(err => console.warn('Edition fetch failed:', err));
   }, []);
+  const refreshEdition = async () => {
+    try {
+      await fetch('https://civicos-r2sf.onrender.com/api/v1/news/edition/generate?force=true', { method: 'POST' });
+      const res = await fetch('https://civicos-r2sf.onrender.com/api/v1/news/edition/today');
+      const data = await res.json();
+      if (data.success && data.data) setTodaysEdition(data.data);
+    } catch (err) {
+      console.warn('Edition refresh failed:', err);
+    }
+  };
 
   return (
     <header className="newspaper-hero">
@@ -96,6 +106,14 @@ export default function Hero({ activeState, onStateSelect, lang, onSearch }) {
                 letterSpacing: '0.2em',
                 color: 'var(--text-secondary)'
               }}>
+                TODAY'S FRONT PAGE — {new Date(todaysEdition.editionDate).toLocaleDateString('en-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+              </span>
+                <span style={{
+                  fontFamily: 'Playfair Display SC',
+                  fontSize: '0.8rem',
+                  letterSpacing: '0.2em',
+                  color: 'var(--text-secondary)'
+                }}>
                 TODAY'S FRONT PAGE — {new Date(todaysEdition.editionDate).toLocaleDateString('en-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
               </span>
                 <h2 style={{
