@@ -206,6 +206,7 @@ export default function AccountabilitySearch({ activeState, lang, searchEvent })
 
           <div className={`four-column-grid ${isTypesetting ? 'slide-in-column' : ''}`}>
 
+
             {/* Department box */}
             <div style={{ marginBottom: '24px', padding: '16px', border: '2px solid var(--border-color)', background: 'rgba(0,0,0,0.02)', breakInside: 'avoid' }}>
               <h4 style={{ fontFamily: 'Playfair Display SC', fontSize: '1.2rem', marginBottom: '12px', borderBottom: '1px solid #1a1a1a' }}>RESPONSIBLE DEPARTMENT</h4>
@@ -295,14 +296,7 @@ export default function AccountabilitySearch({ activeState, lang, searchEvent })
                   </a>
               )}
             </div>
-            <ComplaintSubmissionForm
-                isOpen={complaintModal.open}
-                onClose={() => setComplaintModal(prev => ({ ...prev, open: false }))}
-                categoryCode={complaintModal.categoryCode}
-                categoryName={complaintModal.categoryName}
-                departmentCode={complaintModal.departmentCode}
-                departmentName={complaintModal.departmentName}
-            />
+
 
             {data.websiteUrl && (
                 <div style={{ marginBottom: '24px', breakInside: 'avoid' }}>
@@ -338,7 +332,14 @@ export default function AccountabilitySearch({ activeState, lang, searchEvent })
           </div>
         </>
       )}
-
+      <ComplaintSubmissionForm
+          isOpen={complaintModal.open}
+          onClose={() => setComplaintModal(prev => ({ ...prev, open: false }))}
+          categoryCode={complaintModal.categoryCode}
+          categoryName={complaintModal.categoryName}
+          departmentCode={complaintModal.departmentCode}
+          departmentName={complaintModal.departmentName}
+      />
       <Modal isOpen={!!modalData} onClose={() => setModalData(null)} title={modalData?.title} stampType={modalData?.stamp}>
         <p>{modalData?.content}</p>
       </Modal>
