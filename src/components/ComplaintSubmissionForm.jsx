@@ -51,7 +51,14 @@ export default function ComplaintSubmissionForm({ isOpen, onClose, categoryCode,
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState('');
   const [trackingResult, setTrackingResult] = useState(null);
-
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => { document.body.style.overflow = ''; };
+  }, [isOpen]);
   const resetForm = () => {
     setDescription('');
     setCitizenName('');
@@ -329,7 +336,7 @@ const overlayStyle = {
 
 const modalStyle = {
   background: '#0d1117', border: '1px solid #21262d', borderRadius: '12px',
-  width: '90%', maxWidth: '560px', maxHeight: '90vh', overflow: 'auto',
+  width: '90%', maxWidth: '560px', maxHeight: '85vh', overflow: 'auto',
   boxShadow: '0 25px 60px rgba(0,0,0,0.5)', position: 'relative',
 };
 
