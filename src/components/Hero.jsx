@@ -147,7 +147,7 @@ export default function Hero({ activeState, onStateSelect, lang, onSearch }) {
 
         </div>
       )}
-      {showTracker && <ComplaintTracker onClose={() => setShowTracker(false)} />}
+      {showTracker && <ComplaintTracker isOpen={true} onClose={() => setShowTracker(false)} />}
     </header>
   );
 }
