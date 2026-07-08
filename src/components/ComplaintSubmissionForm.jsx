@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 
 const API_BASE = 'https://civicos-r2sf.onrender.com';
 
@@ -85,7 +86,7 @@ export default function ComplaintSubmissionForm({ isOpen, onClose, categoryCode,
 
   if (!isOpen) return null;
 
-  return (
+  return createPortal(
       <div style={{
         position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
         background: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(4px)',
@@ -172,6 +173,7 @@ export default function ComplaintSubmissionForm({ isOpen, onClose, categoryCode,
               </form>
           )}
         </div>
-      </div>
+      </div>,
+      document.body
   );
 }
