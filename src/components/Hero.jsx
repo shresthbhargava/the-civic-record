@@ -10,6 +10,7 @@ export default function Hero({ activeState, onStateSelect, lang, onSearch }) {
   const hindiDate = "१४ कार्तिक, शक संवत १९४८";
   const [query, setQuery] = useState('');
   const [todaysEdition, setTodaysEdition] = useState(null);
+  const [showTracker, setShowTracker] = useState(false);
 
   {showTracker && <ComplaintTracker onClose={() => setShowTracker(false)} />}
 
