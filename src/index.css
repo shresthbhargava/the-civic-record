@@ -227,10 +227,11 @@ a {
 
 /* 4-Column Layout Utilities */
 .four-column-grid {
-  column-count: 4;
-  column-gap: 24px;
-  column-rule: 1px solid var(--border-color);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
   text-align: justify;
+}
 }
 
 .pull-quote {
