@@ -81,18 +81,18 @@ export default function ComplaintSubmissionForm({ isOpen, onClose, categoryCode,
 
     try {
       const response = await fetch(
-        `${API_BASE}/api/v1/complaints?categoryCode=${encodeURIComponent(categoryCode)}&departmentCode=${encodeURIComponent(departmentCode)}`,
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            description: description.trim(),
-            citizenName: citizenName.trim() || undefined,
-            citizenEmail: citizenEmail.trim() || undefined,
-            stateCode: stateCode || undefined,
-            districtCode: districtCode.trim() || undefined,
-          }),
-        }
+          `${API_BASE}/api/v1/complaints?categoryCode=${encodeURIComponent(categoryCode)}&departmentCode=${encodeURIComponent(departmentCode)}`,
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              description: description.trim(),
+              citizenName: citizenName.trim() || undefined,
+              citizenEmail: citizenEmail.trim() || undefined,
+              stateCode: stateCode || undefined,
+              districtCode: districtCode.trim() || undefined,
+            }),
+          }
       );
 
       if (!response.ok) {
@@ -120,202 +120,202 @@ export default function ComplaintSubmissionForm({ isOpen, onClose, categoryCode,
   if (!isOpen) return null;
 
   return (
-    <div style={overlayStyle} onClick={handleClose}>
-      <div style={modalStyle} onClick={(e) => e.stopPropagation()}>
-        {/* Header */}
-        <div style={headerStyle}>
-          <div>
-            <h2 style={{ margin: 0, fontSize: '1.25rem', color: '#fff' }}>
-              FILE COMPLAINT
-            </h2>
-            <p style={{ margin: '4px 0 0', fontSize: '0.8rem', color: '#8892b0' }}>
-              Official grievance against government department
-            </p>
+      <div style={overlayStyle} onClick={handleClose}>
+        <div style={modalStyle} onClick={(e) => e.stopPropagation()}>
+          {/* Header */}
+          <div style={headerStyle}>
+            <div>
+              <h2 style={{ margin: 0, fontSize: '1.25rem', color: '#fff' }}>
+                FILE COMPLAINT
+              </h2>
+              <p style={{ margin: '4px 0 0', fontSize: '0.8rem', color: '#8892b0' }}>
+                Official grievance against government department
+              </p>
+            </div>
+            <button onClick={handleClose} style={closeBtnStyle}>✕</button>
           </div>
-          <button onClick={handleClose} style={closeBtnStyle}>✕</button>
-        </div>
 
-        {submitted && trackingResult ? (
-          /* Success State */
-          <div style={successContainer}>
-            <div style={successIconStyle}>✓</div>
-            <h3 style={{ margin: '12px 0 8px', color: '#00ff88', fontSize: '1.1rem' }}>
-              COMPLAINT FILED SUCCESSFULLY
-            </h3>
-            <p style={{ margin: '0 0 20px', color: '#8892b0', fontSize: '0.85rem', textAlign: 'center' }}>
-              Your grievance has been recorded. Save your tracking ID below.
-            </p>
+          {submitted && trackingResult ? (
+              /* Success State */
+              <div style={successContainer}>
+                <div style={successIconStyle}>✓</div>
+                <h3 style={{ margin: '12px 0 8px', color: '#00ff88', fontSize: '1.1rem' }}>
+                  COMPLAINT FILED SUCCESSFULLY
+                </h3>
+                <p style={{ margin: '0 0 20px', color: '#8892b0', fontSize: '0.85rem', textAlign: 'center' }}>
+                  Your grievance has been recorded. Save your tracking ID below.
+                </p>
 
-            <div style={trackingBox}>
+                <div style={trackingBox}>
               <span style={{ color: '#8892b0', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '1px' }}>
                 Your Tracking ID
               </span>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginTop: '6px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginTop: '6px' }}>
                 <span style={{ color: '#00ff88', fontSize: '1.5rem', fontFamily: 'monospace', fontWeight: 'bold' }}>
                   {trackingResult.trackingId}
                 </span>
-                <button onClick={copyTrackingId} style={copyBtnStyle}>
-                  Copy
-                </button>
-              </div>
-            </div>
+                    <button onClick={copyTrackingId} style={copyBtnStyle}>
+                      Copy
+                    </button>
+                  </div>
+                </div>
 
-            <div style={infoGrid}>
-              <div style={infoItem}>
-                <span style={infoLabel}>Department</span>
-                <span style={infoValue}>{trackingResult.departmentName}</span>
-              </div>
-              <div style={infoItem}>
-                <span style={infoLabel}>Category</span>
-                <span style={infoValue}>{trackingResult.categoryName}</span>
-              </div>
-              <div style={infoItem}>
-                <span style={infoLabel}>Status</span>
-                <span style={infoValue}>{trackingResult.status}</span>
-              </div>
-              <div style={infoItem}>
-                <span style={infoLabel}>Filed On</span>
-                <span style={infoValue}>
+                <div style={infoGrid}>
+                  <div style={infoItem}>
+                    <span style={infoLabel}>Department</span>
+                    <span style={infoValue}>{trackingResult.departmentName}</span>
+                  </div>
+                  <div style={infoItem}>
+                    <span style={infoLabel}>Category</span>
+                    <span style={infoValue}>{trackingResult.categoryName}</span>
+                  </div>
+                  <div style={infoItem}>
+                    <span style={infoLabel}>Status</span>
+                    <span style={infoValue}>{trackingResult.status}</span>
+                  </div>
+                  <div style={infoItem}>
+                    <span style={infoLabel}>Filed On</span>
+                    <span style={infoValue}>
                   {trackingResult.createdAt
-                    ? new Date(trackingResult.createdAt).toLocaleDateString('en-IN', {
+                      ? new Date(trackingResult.createdAt).toLocaleDateString('en-IN', {
                         day: 'numeric', month: 'short', year: 'numeric'
                       })
-                    : 'N/A'}
+                      : 'N/A'}
                 </span>
-              </div>
-            </div>
+                  </div>
+                </div>
 
-            {trackingResult.complaintPortalUrl && (
-              <a
-                href={trackingResult.complaintPortalUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={portalLink}
-              >
-                → ALSO FILE ON OFFICIAL PORTAL
-              </a>
-            )}
-
-            <button onClick={handleClose} style={doneBtnStyle}>
-              DONE
-            </button>
-          </div>
-        ) : (
-          /* Form State */
-          <form onSubmit={handleSubmit} style={{ padding: '20px 24px 24px' }}>
-            {/* Pre-filled context */}
-            <div style={contextBanner}>
-              <div style={contextTag}>
-                <span style={{ color: '#8892b0', fontSize: '0.7rem', textTransform: 'uppercase' }}>Category</span>
-                <span style={{ color: '#fff', fontSize: '0.85rem' }}>{categoryName || categoryCode}</span>
-              </div>
-              <div style={contextTag}>
-                <span style={{ color: '#8892b0', fontSize: '0.7rem', textTransform: 'uppercase' }}>Department</span>
-                <span style={{ color: '#fff', fontSize: '0.85rem' }}>{departmentName || departmentCode}</span>
-              </div>
-            </div>
-
-            {/* Description */}
-            <div style={fieldGroup}>
-              <label style={labelStyle}>
-                Complaint Description <span style={{ color: '#ff4757' }}>*</span>
-              </label>
-              <textarea
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                placeholder="Describe your issue in detail — what happened, when, where, and what action you expect..."
-                style={{ ...inputStyle, minHeight: '120px', resize: 'vertical' }}
-                maxLength={5000}
-                required
-              />
-              <span style={charCount}>{description.length}/5000</span>
-            </div>
-
-            {/* Name + Email row */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
-              <div style={fieldGroup}>
-                <label style={labelStyle}>Your Name <span style={{ color: '#555' }}>(optional)</span></label>
-                <input
-                  type="text"
-                  value={citizenName}
-                  onChange={(e) => setCitizenName(e.target.value)}
-                  placeholder="e.g. Rahul Sharma"
-                  style={inputStyle}
-                  maxLength={255}
-                />
-              </div>
-              <div style={fieldGroup}>
-                <label style={labelStyle}>Email <span style={{ color: '#555' }}>(optional)</span></label>
-                <input
-                  type="email"
-                  value={citizenEmail}
-                  onChange={(e) => setCitizenEmail(e.target.value)}
-                  placeholder="e.g. rahul@email.com"
-                  style={inputStyle}
-                  maxLength={255}
-                />
-              </div>
-            </div>
-
-            {/* State dropdown */}
-            <div style={fieldGroup}>
-              <label style={labelStyle}>State <span style={{ color: '#555' }}>(optional)</span></label>
-              <select value={stateCode} onChange={(e) => setStateCode(e.target.value)} style={inputStyle}>
-                <option value="">Select state...</option>
-                {INDIAN_STATES.map((s) => (
-                  <option key={s.code} value={s.code}>
-                    {s.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {/* District */}
-            <div style={fieldGroup}>
-              <label style={labelStyle}>District <span style={{ color: '#555' }}>(optional)</span></label>
-              <input
-                type="text"
-                value={districtCode}
-                onChange={(e) => setDistrictCode(e.target.value)}
-                placeholder="e.g. Pune, Mumbai, Delhi"
-                style={inputStyle}
-                maxLength={20}
-              />
-            </div>
-
-            {/* Error */}
-            {error && (
-              <div style={errorBox}>
-                ⚠ {error}
-              </div>
-            )}
-
-            {/* Actions */}
-            <div style={{ display: 'flex', gap: '12px', marginTop: '20px' }}>
-              <button
-                type="button"
-                onClick={handleClose}
-                style={cancelBtnStyle}
-                disabled={submitting}
-              >
-                CANCEL
-              </button>
-              <button
-                type="submit"
-                style={submitBtnStyle}
-                disabled={submitting || !description.trim()}
-              >
-                {submitting ? (
-                  <span style={spinnerStyle}>SUBMITTING...</span>
-                ) : (
-                  'SUBMIT COMPLAINT'
+                {trackingResult.complaintPortalUrl && (
+                    <a
+                        href={trackingResult.complaintPortalUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={portalLink}
+                    >
+                      → ALSO FILE ON OFFICIAL PORTAL
+                    </a>
                 )}
-              </button>
-            </div>
-          </form>
-        )}
+
+                <button onClick={handleClose} style={doneBtnStyle}>
+                  DONE
+                </button>
+              </div>
+          ) : (
+              /* Form State */
+              <form onSubmit={handleSubmit} style={{ padding: '20px 24px 24px' }}>
+                {/* Pre-filled context */}
+                <div style={contextBanner}>
+                  <div style={contextTag}>
+                    <span style={{ color: '#8892b0', fontSize: '0.7rem', textTransform: 'uppercase' }}>Category</span>
+                    <span style={{ color: '#fff', fontSize: '0.85rem' }}>{categoryName || categoryCode}</span>
+                  </div>
+                  <div style={contextTag}>
+                    <span style={{ color: '#8892b0', fontSize: '0.7rem', textTransform: 'uppercase' }}>Department</span>
+                    <span style={{ color: '#fff', fontSize: '0.85rem' }}>{departmentName || departmentCode}</span>
+                  </div>
+                </div>
+
+                {/* Description */}
+                <div style={fieldGroup}>
+                  <label style={labelStyle}>
+                    Complaint Description <span style={{ color: '#ff4757' }}>*</span>
+                  </label>
+                  <textarea
+                      value={description}
+                      onChange={(e) => setDescription(e.target.value)}
+                      placeholder="Describe your issue in detail — what happened, when, where, and what action you expect..."
+                      style={{ ...inputStyle, minHeight: '120px', resize: 'vertical' }}
+                      maxLength={5000}
+                      required
+                  />
+                  <span style={charCount}>{description.length}/5000</span>
+                </div>
+
+                {/* Name + Email row */}
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                  <div style={fieldGroup}>
+                    <label style={labelStyle}>Your Name <span style={{ color: '#555' }}>(optional)</span></label>
+                    <input
+                        type="text"
+                        value={citizenName}
+                        onChange={(e) => setCitizenName(e.target.value)}
+                        placeholder="e.g. Rahul Sharma"
+                        style={inputStyle}
+                        maxLength={255}
+                    />
+                  </div>
+                  <div style={fieldGroup}>
+                    <label style={labelStyle}>Email <span style={{ color: '#555' }}>(optional)</span></label>
+                    <input
+                        type="email"
+                        value={citizenEmail}
+                        onChange={(e) => setCitizenEmail(e.target.value)}
+                        placeholder="e.g. rahul@email.com"
+                        style={inputStyle}
+                        maxLength={255}
+                    />
+                  </div>
+                </div>
+
+                {/* State dropdown */}
+                <div style={fieldGroup}>
+                  <label style={labelStyle}>State <span style={{ color: '#555' }}>(optional)</span></label>
+                  <select value={stateCode} onChange={(e) => setStateCode(e.target.value)} style={inputStyle}>
+                    <option value="">Select state...</option>
+                    {INDIAN_STATES.map((s) => (
+                        <option key={s.code} value={s.code}>
+                          {s.name}
+                        </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* District */}
+                <div style={fieldGroup}>
+                  <label style={labelStyle}>District <span style={{ color: '#555' }}>(optional)</span></label>
+                  <input
+                      type="text"
+                      value={districtCode}
+                      onChange={(e) => setDistrictCode(e.target.value)}
+                      placeholder="e.g. Pune, Mumbai, Delhi"
+                      style={inputStyle}
+                      maxLength={20}
+                  />
+                </div>
+
+                {/* Error */}
+                {error && (
+                    <div style={errorBox}>
+                      ⚠ {error}
+                    </div>
+                )}
+
+                {/* Actions */}
+                <div style={{ display: 'flex', gap: '12px', marginTop: '20px' }}>
+                  <button
+                      type="button"
+                      onClick={handleClose}
+                      style={cancelBtnStyle}
+                      disabled={submitting}
+                  >
+                    CANCEL
+                  </button>
+                  <button
+                      type="submit"
+                      style={submitBtnStyle}
+                      disabled={submitting || !description.trim()}
+                  >
+                    {submitting ? (
+                        <span style={spinnerStyle}>SUBMITTING...</span>
+                    ) : (
+                        'SUBMIT COMPLAINT'
+                    )}
+                  </button>
+                </div>
+              </form>
+          )}
+        </div>
       </div>
-    </div>
   );
 }
 
