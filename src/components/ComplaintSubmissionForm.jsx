@@ -52,11 +52,8 @@ export default function ComplaintSubmissionForm({ isOpen, onClose, categoryCode,
   const [error, setError] = useState('');
   const [trackingResult, setTrackingResult] = useState(null);
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
+    if (isOpen) { document.body.style.overflow = 'hidden'; }
+    else { document.body.style.overflow = ''; }
     return () => { document.body.style.overflow = ''; };
   }, [isOpen]);
   useEffect(() => {
