@@ -12,7 +12,7 @@ export default function Hero({ activeState, onStateSelect, lang, onSearch }) {
   const [todaysEdition, setTodaysEdition] = useState(null);
   const [showTracker, setShowTracker] = useState(false);
 
-  {showTracker && <ComplaintTracker onClose={() => setShowTracker(false)} />}
+
 
   const tags = ["[Exam Leak]", "[Water Supply]", "[Road Projects]", "[State Debt]", "[Food Safety]"];
   useEffect(() => {
@@ -147,6 +147,7 @@ export default function Hero({ activeState, onStateSelect, lang, onSearch }) {
 
         </div>
       )}
+      {showTracker && <ComplaintTracker onClose={() => setShowTracker(false)} />}
     </header>
   );
 }
