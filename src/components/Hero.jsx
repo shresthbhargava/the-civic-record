@@ -10,7 +10,7 @@ export default function Hero({ activeState, onStateSelect, lang, onSearch }) {
   const hindiDate = "१४ कार्तिक, शक संवत १९४८";
   const [query, setQuery] = useState('');
   const [todaysEdition, setTodaysEdition] = useState(null);
-  const [showTracker, setShowTracker] = useState(false);
+
   {showTracker && <ComplaintTracker onClose={() => setShowTracker(false)} />}
 
   const tags = ["[Exam Leak]", "[Water Supply]", "[Road Projects]", "[State Debt]", "[Food Safety]"];
@@ -22,6 +22,7 @@ export default function Hero({ activeState, onStateSelect, lang, onSearch }) {
         })
         .catch(err => console.warn('Edition fetch failed:', err));
   }, []);
+
   return (
     <header className="newspaper-hero">
       <div className="masthead-section border-bottom-thick">
@@ -55,11 +56,11 @@ export default function Hero({ activeState, onStateSelect, lang, onSearch }) {
               />
               <button className="search-btn" onClick={() => onSearch?.(query)}>{getTranslation(lang, 'searchBtn')}</button>
               <button
-                  className="search-btn"
-                  style={{ marginLeft: '12px', background: 'var(--accent-color)' }}
+                  className="search-btn track-btn"
+                  style={{ marginLeft: '12px' }}
                   onClick={() => setShowTracker(true)}
               >
-                📋 TRACK COMPLAINT
+                TRACK COMPLAINT
               </button>
             </div>
 
@@ -135,11 +136,11 @@ export default function Hero({ activeState, onStateSelect, lang, onSearch }) {
               {getTranslation(lang, 'searchBtn')}
             </button>
             <button
-                className="search-btn"
-                style={{ marginLeft: '12px', background: 'var(--accent-color)' }}
+                className="search-btn track-btn"
+                style={{ marginLeft: '12px' }}
                 onClick={() => setShowTracker(true)}
             >
-              📋 TRACK COMPLAINT
+              TRACK COMPLAINT
             </button>
           </div>
 

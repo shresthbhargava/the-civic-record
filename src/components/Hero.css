@@ -79,3 +79,19 @@
 .map-hero-section {
   padding: 40px 0;
 }
+.track-btn {
+  background: transparent !important;
+  color: var(--text-primary) !important;
+  border: 2px solid var(--border-color) !important;
+  letter-spacing: 0.15em;
+  font-family: 'Playfair Display SC', serif;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  transition: all 0.2s ease;
+}
+
+.track-btn:hover {
+  background: var(--text-primary) !important;
+  color: var(--bg-primary) !important;
+  border-color: var(--text-primary) !important;
+}
