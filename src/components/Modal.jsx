@@ -19,10 +19,10 @@ export default function Modal({ isOpen, onClose, title, subtitle, children, stam
       top: 0, left: 0, right: 0, bottom: 0,
       backgroundColor: 'rgba(0,0,0,0.8)',
       zIndex: 10000,
-      display: 'flex',
-      alignItems: 'center',
+      display: 'flex', overflowY: 'auto',
+      alignItems: 'safe center',
       justifyContent: 'center',
-      padding: '24px'
+      padding: '24px', paddingTop: '2vh'
     }} onClick={onClose}>
       
       <div style={{
@@ -43,7 +43,7 @@ export default function Modal({ isOpen, onClose, title, subtitle, children, stam
           cursor: 'var(--cursor-stamp)', color: 'var(--border-color)', fontWeight: 'bold'
         }}>&times;</button>
 
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', borderBottom: '2px solid var(--border-color)', paddingBottom: '16px', marginBottom: '24px' }}>
+        <div style={{ display: 'flex', overflowY: 'auto', justifyContent: 'space-between', alignItems: 'flex-start', borderBottom: '2px solid var(--border-color)', paddingBottom: '16px', marginBottom: '24px' }}>
           <div>
             <h2 style={{ fontFamily: 'Playfair Display SC', fontSize: '2.5rem', marginBottom: '8px', paddingRight: '16px' }}>{title}</h2>
             {subtitle && <p style={{ fontFamily: 'Lora', fontStyle: 'italic', color: 'var(--text-secondary)' }}>{subtitle}</p>}
