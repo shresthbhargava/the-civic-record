@@ -335,8 +335,8 @@ export default function ComplaintSubmissionForm({ isOpen, onClose, categoryCode,
 
 const overlayStyle = {
   position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-  background: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(4px)',
-  display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000,
+  background: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(4px)', paddingTop: '40px', paddingBottom: '40px',
+  display: 'flex', alignItems: 'flex-start', justifyContent: 'center', overflowY: 'auto',, zIndex: 1000,
 };
 
 const modalStyle = {
@@ -406,7 +406,7 @@ const successContainer = {
 const successIconStyle = {
   width: '56px', height: '56px', borderRadius: '50%',
   background: 'rgba(0,255,136,0.1)', border: '2px solid #00ff88',
-  display: 'flex', alignItems: 'center', justifyContent: 'center',
+  display: 'flex', alignItems: 'flex-start', justifyContent: 'center', overflowY: 'auto',,
   fontSize: '1.5rem', color: '#00ff88', margin: '0 auto',
 };
 
