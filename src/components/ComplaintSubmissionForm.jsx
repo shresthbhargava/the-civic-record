@@ -211,7 +211,7 @@ export default function ComplaintSubmissionForm({ isOpen, onClose, categoryCode,
               /* Form State */
               <form onSubmit={handleSubmit} style={{
                 padding: '20px 24px 0',
-                flex: 1, minHeight: 0, minHeight: 0,
+                flex: 1, minHeight: 0,
                 overflowY: 'auto',
                 display: 'flex',
                 flexDirection: 'column',
@@ -384,7 +384,7 @@ const errorBox = {
 };
 
 const cancelBtnStyle = {
-  flex: 1, minHeight: 0, minHeight: 0, padding: '12px', background: 'transparent', border: '1px solid #30363d',
+  flex: 1, minHeight: 0,  padding: '12px', background: 'transparent', border: '1px solid #30363d',
   borderRadius: '8px', color: '#8892b0', fontSize: '0.85rem', fontWeight: '600',
   cursor: 'pointer', fontFamily: 'inherit',
 };
