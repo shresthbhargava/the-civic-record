@@ -9,7 +9,7 @@ import { getTranslation } from '../i18n';
 
 const API_BASE = 'https://civicos-r2sf.onrender.com';
 
-export default function AccountabilitySearch({ activeState, lang, searchEvent ,setComplaintModal}) {
+export default function AccountabilitySearch({ activeState, lang, searchEvent }) {
   const [modalData, setModalData] = useState(null);
   const [isTypesetting, setIsTypesetting] = useState(false);
   const [isRtiOpen, setIsRtiOpen] = useState(false);
