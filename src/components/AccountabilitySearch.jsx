@@ -6,6 +6,7 @@ import ShareCard from './ShareCard';
 import ComplaintSubmissionForm from './ComplaintSubmissionForm';
 import './AccountabilitySearch.css';
 import { getTranslation } from '../i18n';
+import RtiDraftModal from './RtiDraftModal';
 
 const API_BASE = 'https://civicos-r2sf.onrender.com';
 
@@ -19,6 +20,7 @@ export default function AccountabilitySearch({ activeState, lang, searchEvent })
   const [searchData, setSearchData] = useState(null);
   const [noResults, setNoResults] = useState(false);
   const [error, setError] = useState(null);
+  const [rtiModal, setRtiModal] = useState({ open: false, departmentCode: '', categoryName: '' });
   const [complaintModal, setComplaintModal] = useState({
     open: false, categoryCode: '', categoryName: '', departmentCode: '', departmentName: ''
   });
@@ -143,9 +145,10 @@ export default function AccountabilitySearch({ activeState, lang, searchEvent })
   };
 
   const handleStampClick = (e, callback) => {
-    e.currentTarget.classList.add('stamp-press-anim');
+    const target = e.currentTarget;
+    target.classList.add('stamp-press-anim');
     setTimeout(() => {
-      e.currentTarget.classList.remove('stamp-press-anim');
+      target.classList.remove('stamp-press-anim');
       callback();
     }, 200);
   };
@@ -284,6 +287,13 @@ export default function AccountabilitySearch({ activeState, lang, searchEvent })
                   style={{ display: 'block', width: '100%', textAlign: 'center', background: '#00ff88', border: 'none', color: '#0d1117', padding: '12px', marginBottom: '8px', fontSize: '0.85rem', borderRadius: '6px', cursor: 'pointer', fontWeight: 700, fontFamily: 'inherit' }}
               >
                 FILE COMPLAINT VIA CIVICOS
+              </button>
+              <button
+                  className="search-btn track-btn"
+                  style={{ marginLeft: '12px' }}
+                  onClick={() => setRtiModal({ open: true, departmentCode: match.departmentCode, categoryName: match.categoryCode })}
+              >
+                GENERATE RTI
               </button>
               {data.complaintPortalUrl && (
                   <a
