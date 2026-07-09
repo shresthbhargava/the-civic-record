@@ -1,62 +1,62 @@
 export const regionalImages = {
   // North India group
-  'UP': 'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80', // Taj
-  'UT': 'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
-  'BR': 'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
-  'JH': 'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
+  'UP': 'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=1920&q=80',
+  'UT': 'https://images.unsplash.com/photo-1587474260584-136574528ed5?auto=format&fit=crop&w=1920&q=80',
+  'BR': 'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=1920&q=80',
+  'JH': 'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=1920&q=80',
 
   // Delhi region
-  'DL': 'https://images.unsplash.com/photo-1587474260584-136574528ed5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80', // India Gate/Red Fort
-  'HR': 'https://images.unsplash.com/photo-1587474260584-136574528ed5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
-  'PB': 'https://images.unsplash.com/photo-1587474260584-136574528ed5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
-  'HP': 'https://images.unsplash.com/photo-1587474260584-136574528ed5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
+  'DL': 'https://images.unsplash.com/photo-1587474260584-136574528ed5?auto=format&fit=crop&w=1920&q=80',
+  'HR': 'https://images.unsplash.com/photo-1587474260584-136574528ed5?auto=format&fit=crop&w=1920&q=80',
+  'PB': 'https://images.unsplash.com/photo-1587474260584-136574528ed5?auto=format&fit=crop&w=1920&q=80',
+  'HP': 'https://images.unsplash.com/photo-1587474260584-136574528ed5?auto=format&fit=crop&w=1920&q=80',
 
   // West/Raj
-  'RJ': 'https://images.unsplash.com/photo-1477587458883-47145ed94245?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80', // Hawa Mahal
-  'GJ': 'https://images.unsplash.com/photo-1477587458883-47145ed94245?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
+  'RJ': 'https://images.unsplash.com/photo-1477587458883-47145ed94245?auto=format&fit=crop&w=1920&q=80',
+  'GJ': 'https://images.unsplash.com/photo-1477587458883-47145ed94245?auto=format&fit=crop&w=1920&q=80',
 
   // Maharashtra/Goa
-  'MH': 'https://images.unsplash.com/photo-1570168007204-dfb528c6958f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80', // Gateway
-  'GA': 'https://images.unsplash.com/photo-1570168007204-dfb528c6958f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
+  'MH': 'https://images.unsplash.com/photo-1570168007204-dfb528c6958f?auto=format&fit=crop&w=1920&q=80',
+  'GA': 'https://images.unsplash.com/photo-1570168007204-dfb528c6958f?auto=format&fit=crop&w=1920&q=80',
 
   // South
-  'KA': 'https://images.unsplash.com/photo-1600100397608-f010f41cb839?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80', // Mysore Palace
-  'KL': 'https://images.unsplash.com/photo-1600100397608-f010f41cb839?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
-  'TN': 'https://images.unsplash.com/photo-1600100397608-f010f41cb839?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
+  'KA': 'https://images.unsplash.com/photo-1600100397608-f010f41cb839?auto=format&fit=crop&w=1920&q=80',
+  'KL': 'https://images.unsplash.com/photo-1600100397608-f010f41cb839?auto=format&fit=crop&w=1920&q=80',
+  'TN': 'https://images.unsplash.com/photo-1600100397608-f010f41cb839?auto=format&fit=crop&w=1920&q=80',
 
   // Andhra/Telangana
-  'AP': 'https://images.unsplash.com/photo-1582510003544-4d00b7f74220?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80', // Charminar
-  'TG': 'https://images.unsplash.com/photo-1582510003544-4d00b7f74220?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
+  'AP': 'https://images.unsplash.com/photo-1582510003544-4d00b7f74220?auto=format&fit=crop&w=1920&q=80',
+  'TG': 'https://images.unsplash.com/photo-1582510003544-4d00b7f74220?auto=format&fit=crop&w=1920&q=80',
 
   // East
-  'WB': 'https://images.unsplash.com/photo-1558431382-27e303142255?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80', // Howrah Bridge
-  'OR': 'https://images.unsplash.com/photo-1558431382-27e303142255?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
+  'WB': 'https://images.unsplash.com/photo-1558431382-27e303142255?auto=format&fit=crop&w=1920&q=80',
+  'OR': 'https://images.unsplash.com/photo-1558431382-27e303142255?auto=format&fit=crop&w=1920&q=80',
 
   // Central
-  'MP': 'https://images.unsplash.com/photo-1621245598642-e02fbce92548?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80', // Sanchi
-  'CT': 'https://images.unsplash.com/photo-1621245598642-e02fbce92548?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
+  'MP': 'https://images.unsplash.com/photo-1621245598642-e02fbce92548?auto=format&fit=crop&w=1920&q=80',
+  'CT': 'https://images.unsplash.com/photo-1621245598642-e02fbce92548?auto=format&fit=crop&w=1920&q=80',
 
   // Northeast
-  'AS': 'https://images.unsplash.com/photo-1571536802807-30451e3955d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80', // Kaziranga/Brahmaputra
-  'ML': 'https://images.unsplash.com/photo-1571536802807-30451e3955d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
-  'MN': 'https://images.unsplash.com/photo-1571536802807-30451e3955d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
-  'NL': 'https://images.unsplash.com/photo-1571536802807-30451e3955d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
-  'MZ': 'https://images.unsplash.com/photo-1571536802807-30451e3955d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
-  'TR': 'https://images.unsplash.com/photo-1571536802807-30451e3955d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
-  'AR': 'https://images.unsplash.com/photo-1571536802807-30451e3955d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
-  'SK': 'https://images.unsplash.com/photo-1571536802807-30451e3955d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
+  'AS': 'https://images.unsplash.com/photo-1571536802807-30451e3955d8?auto=format&fit=crop&w=1920&q=80',
+  'ML': 'https://images.unsplash.com/photo-1571536802807-30451e3955d8?auto=format&fit=crop&w=1920&q=80',
+  'MN': 'https://images.unsplash.com/photo-1571536802807-30451e3955d8?auto=format&fit=crop&w=1920&q=80',
+  'NL': 'https://images.unsplash.com/photo-1571536802807-30451e3955d8?auto=format&fit=crop&w=1920&q=80',
+  'MZ': 'https://images.unsplash.com/photo-1571536802807-30451e3955d8?auto=format&fit=crop&w=1920&q=80',
+  'TR': 'https://images.unsplash.com/photo-1571536802807-30451e3955d8?auto=format&fit=crop&w=1920&q=80',
+  'AR': 'https://images.unsplash.com/photo-1571536802807-30451e3955d8?auto=format&fit=crop&w=1920&q=80',
+  'SK': 'https://images.unsplash.com/photo-1571536802807-30451e3955d8?auto=format&fit=crop&w=1920&q=80',
 
   // J&K
-  'JK': 'https://images.unsplash.com/photo-1595815771614-ade9d652a65d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80', // Dal Lake
-  'LA': 'https://images.unsplash.com/photo-1595815771614-ade9d652a65d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
+  'JK': 'https://images.unsplash.com/photo-1595815771614-ade9d652a65d?auto=format&fit=crop&w=1920&q=80',
+  'LA': 'https://images.unsplash.com/photo-1595815771614-ade9d652a65d?auto=format&fit=crop&w=1920&q=80',
 
   // UTs
-  'CH': 'https://images.unsplash.com/photo-1587474260584-136574528ed5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
-  'DN': 'https://images.unsplash.com/photo-1570168007204-dfb528c6958f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
-  'DD': 'https://images.unsplash.com/photo-1570168007204-dfb528c6958f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
-  'AN': 'https://images.unsplash.com/photo-1600100397608-f010f41cb839?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
-  'LD': 'https://images.unsplash.com/photo-1600100397608-f010f41cb839?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
-  'PY': 'https://images.unsplash.com/photo-1600100397608-f010f41cb839?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80'
+  'CH': 'https://images.unsplash.com/photo-1587474260584-136574528ed5?auto=format&fit=crop&w=1920&q=80',
+  'DN': 'https://images.unsplash.com/photo-1570168007204-dfb528c6958f?auto=format&fit=crop&w=1920&q=80',
+  'DD': 'https://images.unsplash.com/photo-1570168007204-dfb528c6958f?auto=format&fit=crop&w=1920&q=80',
+  'AN': 'https://images.unsplash.com/photo-1558431382-27e303142255?auto=format&fit=crop&w=1920&q=80',
+  'LD': 'https://images.unsplash.com/photo-1600100397608-f010f41cb839?auto=format&fit=crop&w=1920&q=80',
+  'PY': 'https://images.unsplash.com/photo-1600100397608-f010f41cb839?auto=format&fit=crop&w=1920&q=80'
 };
 
 export const stateFiscalHealth = {

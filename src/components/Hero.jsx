@@ -40,8 +40,8 @@ export default function Hero({ activeState, onStateSelect, lang, onSearch }) {
           <span className="edition">National Edition &bull; Vol. 1</span>
         </div>
 
-        <h1 className="masthead-title" onClick={() => onStateSelect(null)} style={{ cursor: 'var(--cursor-stamp)' }}>THE CIVIC RECORD</h1>
-        <h2 className="masthead-tagline hindi-text">{getTranslation(lang, 'tagline')}</h2>
+        <h1 className="masthead-title typewriter-text" onClick={() => onStateSelect(null)} style={{ cursor: 'var(--cursor-stamp)' }}>THE CIVIC RECORD</h1>
+        <h2 className="masthead-tagline hindi-text typewriter-text" style={{ animationDelay: '1s' }}>{getTranslation(lang, 'tagline')}</h2>
 
         <div className="masthead-bottom-strip border-top-thick">
           <span className="motto" style={{ fontFamily: 'Playfair Display', fontStyle: 'italic' }}>Printed and Verified.</span>

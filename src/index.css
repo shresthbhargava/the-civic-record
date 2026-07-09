@@ -244,3 +244,35 @@ a {
   border-right: 6px solid var(--border-color);
   column-span: all;
 }
+
+/* Interactive Element Enhancements */
+@keyframes typewriter {
+  from { clip-path: inset(0 100% 0 0); opacity: 0; }
+  to { clip-path: inset(0 0 0 0); opacity: 1; }
+}
+
+.typewriter-text {
+  display: inline-block;
+  animation: typewriter 1s steps(40, end) forwards;
+}
+
+.ink-bleed-hover {
+  transition: all 0.3s ease;
+}
+
+.ink-bleed-hover:hover {
+  color: var(--accent-red);
+  text-shadow: 0 0 8px rgba(139, 0, 0, 0.4), 0 0 2px rgba(139, 0, 0, 0.8);
+  transform: scale(1.02);
+}
+
+.parallax-bg {
+  /* Requires background-attachment: fixed on the element or body */
+  background-attachment: fixed;
+  animation: bg-pan 30s linear infinite alternate;
+}
+
+@keyframes bg-pan {
+  from { background-position: 0% 0%; background-size: 105%; }
+  to { background-position: 100% 100%; background-size: 110%; }
+}

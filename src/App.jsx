@@ -60,11 +60,11 @@ function App() {
         // Update Background
         const bgUrl = regionalImages[idUpper] || regionalImages['DL'];
         document.body.style.backgroundImage = `url(${bgUrl})`;
-        document.body.classList.add('state-view-active');
+        document.body.classList.add('state-view-active', 'parallax-bg');
       } else {
         setLang('en');
         document.body.style.backgroundImage = 'none';
-        document.body.classList.remove('state-view-active');
+        document.body.classList.remove('state-view-active', 'parallax-bg');
       }
       // Turn page in
       setPageTurn(false);
@@ -76,14 +76,15 @@ function App() {
       {/* Top Utility Strip */}
       <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 24px', borderBottom: '2px solid var(--border-color)', fontSize: '0.85rem', fontFamily: 'Lora', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
         <div className="lang-switcher">
-          <button onClick={() => setLang('en')} style={{ fontWeight: lang === 'en' ? 'bold' : 'normal', background: 'none', border: 'none', marginRight: '12px' }}>English</button>
-          <button onClick={() => setLang('hi')} className="hindi-text" style={{ fontWeight: lang === 'hi' ? 'bold' : 'normal', background: 'none', border: 'none', marginRight: '12px' }}>हिंदी</button>
-          <button onClick={() => setLang('mr')} className="hindi-text" style={{ fontWeight: lang === 'mr' ? 'bold' : 'normal', background: 'none', border: 'none', marginRight: '12px' }}>मराठी</button>
-          <button onClick={() => setLang('bn')} className="hindi-text" style={{ fontWeight: lang === 'bn' ? 'bold' : 'normal', background: 'none', border: 'none', marginRight: '12px' }}>বাংলা</button>
-          <button onClick={() => setLang('ta')} className="hindi-text" style={{ fontWeight: lang === 'ta' ? 'bold' : 'normal', background: 'none', border: 'none' }}>தமிழ்</button>
+          <button onClick={() => setLang('en')} className="ink-bleed-hover" style={{ fontWeight: lang === 'en' ? 'bold' : 'normal', background: 'none', border: 'none', marginRight: '12px', cursor: 'var(--cursor-stamp)' }}>English</button>
+          <button onClick={() => setLang('hi')} className="hindi-text ink-bleed-hover" style={{ fontWeight: lang === 'hi' ? 'bold' : 'normal', background: 'none', border: 'none', marginRight: '12px', cursor: 'var(--cursor-stamp)' }}>हिंदी</button>
+          <button onClick={() => setLang('mr')} className="hindi-text ink-bleed-hover" style={{ fontWeight: lang === 'mr' ? 'bold' : 'normal', background: 'none', border: 'none', marginRight: '12px', cursor: 'var(--cursor-stamp)' }}>मराठी</button>
+          <button onClick={() => setLang('bn')} className="hindi-text ink-bleed-hover" style={{ fontWeight: lang === 'bn' ? 'bold' : 'normal', background: 'none', border: 'none', marginRight: '12px', cursor: 'var(--cursor-stamp)' }}>বাংলা</button>
+          <button onClick={() => setLang('ta')} className="hindi-text ink-bleed-hover" style={{ fontWeight: lang === 'ta' ? 'bold' : 'normal', background: 'none', border: 'none', cursor: 'var(--cursor-stamp)' }}>தமிழ்</button>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px', fontFamily: 'Playfair Display SC', fontWeight: 'bold' }}>
           <button 
+            className="ink-bleed-hover"
             style={{ 
               background: 'transparent', 
               border: '1px solid var(--text-primary)', 
