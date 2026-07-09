@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './RtiModal.css';
 
 const API_BASE = 'https://civicos-r2sf.onrender.com';
@@ -17,6 +17,11 @@ const stateCodeMap = {
 };
 
 export default function RtiModal({ onClose, department, official, categoryCode = '', departmentCode = '' }) {
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => { document.body.style.overflow = 'auto'; };
+  }, []);
+
   const [view, setView] = useState('FORM'); // 'FORM' | 'GENERATING' | 'DRAFT'
   const [formData, setFormData] = useState({
     citizenName: '',
