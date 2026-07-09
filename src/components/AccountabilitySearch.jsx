@@ -6,8 +6,6 @@ import ShareCard from './ShareCard';
 import ComplaintSubmissionForm from './ComplaintSubmissionForm';
 import './AccountabilitySearch.css';
 import { getTranslation } from '../i18n';
-import RtiDraftModal from './RtiDraftModal';
-
 const API_BASE = 'https://civicos-r2sf.onrender.com';
 
 export default function AccountabilitySearch({ activeState, lang, searchEvent }) {
