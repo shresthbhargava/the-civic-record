@@ -1,98 +1,280 @@
-import React from 'react';
-import { jsPDF } from 'jspdf';
+import React, { useState } from 'react';
+import './RtiModal.css';
 
-export default function RtiModal({ onClose, department, official }) {
-  
-  const generatePDF = () => {
-    const doc = new jsPDF();
+const API_BASE = 'https://civicos-r2sf.onrender.com';
+
+const stateCodeMap = {
+  'Maharashtra': 'MH', 'Delhi': 'DL', 'Karnataka': 'KA',
+  'Tamil Nadu': 'TN', 'Uttar Pradesh': 'UP', 'Bihar': 'BR',
+  'Gujarat': 'GJ', 'Rajasthan': 'RJ', 'West Bengal': 'WB',
+  'Punjab': 'PB', 'Haryana': 'HR', 'Madhya Pradesh': 'MP',
+  'Andhra Pradesh': 'AP', 'Telangana': 'TG', 'Kerala': 'KL',
+  'Odisha': 'OR', 'Jharkhand': 'JH', 'Assam': 'AS',
+  'Chhattisgarh': 'CG', 'Uttarakhand': 'UK', 'Himachal Pradesh': 'HP',
+  'Goa': 'GA', 'Jammu & Kashmir': 'JK', 'Manipur': 'MN',
+  'Meghalaya': 'ML', 'Nagaland': 'NL', 'Tripura': 'TR',
+  'Arunachal Pradesh': 'AR', 'Mizoram': 'MZ', 'Sikkim': 'SK',
+};
+
+export default function RtiModal({ onClose, department, official, categoryCode = '', departmentCode = '' }) {
+  const [view, setView] = useState('FORM'); // 'FORM' | 'GENERATING' | 'DRAFT'
+  const [formData, setFormData] = useState({
+    citizenName: '',
+    citizenAddress: '',
+    citizenEmail: '',
+    stateCode: '',
+    districtCode: '',
+    categoryCode: categoryCode,
+    departmentCode: departmentCode
+  });
+  const [error, setError] = useState('');
+  const [draftData, setDraftData] = useState(null);
+  const [copyText, setCopyText] = useState('COPY TO CLIPBOARD');
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleStampClick = (e, callback) => {
+    if (e) {
+      const target = e.currentTarget;
+      target.classList.add('stamp-press-anim');
+      setTimeout(() => {
+        target.classList.remove('stamp-press-anim');
+        callback();
+      }, 200);
+    } else {
+      callback();
+    }
+  };
+
+  const generateDraft = async (e) => {
+    e.preventDefault();
     
-    // Vintage Gov style PDF generation
-    doc.setFont("times", "bold");
-    doc.setFontSize(22);
-    doc.text("GOVERNMENT OF INDIA", 105, 20, null, null, "center");
+    if (!formData.citizenName || !formData.citizenAddress || !formData.citizenEmail || !formData.stateCode) {
+      setError('Please fill in all required fields.');
+      return;
+    }
     
-    doc.setFontSize(14);
-    doc.text("RIGHT TO INFORMATION ACT, 2005", 105, 30, null, null, "center");
-    doc.text("FORM-A (See Rule 3(1))", 105, 38, null, null, "center");
-    
-    doc.line(20, 42, 190, 42); // Line
-    
-    doc.setFont("times", "normal");
-    doc.setFontSize(12);
-    
-    doc.text("To,", 20, 55);
-    doc.text(`The Public Information Officer,`, 20, 65);
-    doc.text(`${department}`, 20, 75);
-    
-    doc.text("1. Full Name of Applicant: ________________________", 20, 95);
-    doc.text("2. Address: _____________________________________", 20, 105);
-    doc.text("            _____________________________________", 20, 115);
-    
-    doc.setFont("times", "bold");
-    doc.text("3. Details of information required:", 20, 135);
-    doc.setFont("times", "normal");
-    
-    const reqText = `Under Section 6 of the RTI Act 2005, I request the financial \nexpenditure logs, tender allocation documents, and internal \nproject memos concerning the jurisdiction overseen by \n${official.name} (${official.title}).`;
-    doc.text(reqText, 30, 145);
-    
-    doc.text("4. Application Fee Details: Attached Postal Order of Rs. 10", 20, 180);
-    
-    doc.text("Signature of Applicant: _________________", 120, 220);
-    doc.text("Date: " + new Date().toLocaleDateString(), 20, 220);
-    
-    // Save the PDF
-    doc.save("RTI_Application_Form.pdf");
+    setError('');
+    setView('GENERATING');
+
+    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 seconds timeout
+
+      const response = await fetch(`${API_BASE}/api/v1/rti/generate`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+        signal: controller.signal
+      });
+
+      clearTimeout(timeoutId);
+
+      if (!response.ok) {
+        throw new Error('Server returned an error.');
+      }
+
+      const result = await response.json();
+      
+      if (result.success && result.data) {
+        setDraftData(result.data);
+        setView('DRAFT');
+      } else {
+        throw new Error('Invalid response format.');
+      }
+    } catch (err) {
+      if (err.name === 'AbortError') {
+        setError('Server is taking too long. Please try again.');
+      } else {
+        setError(err.message || 'Failed to generate RTI draft. Please try again.');
+      }
+      setView('FORM');
+    }
+  };
+
+  const handleCopy = () => {
+    if (draftData && draftData.draftText) {
+      navigator.clipboard.writeText(draftData.draftText)
+        .then(() => {
+          setCopyText('COPIED!');
+          setTimeout(() => setCopyText('COPY TO CLIPBOARD'), 2000);
+        })
+        .catch(() => setError('Failed to copy text.'));
+    }
+  };
+
+  const handleDownload = () => {
+    if (draftData && draftData.draftText) {
+      const blob = new Blob([draftData.draftText], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      const dateStr = new Date().toISOString().split('T')[0];
+      a.download = `rti-draft-${dateStr}.txt`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
   };
 
   return (
-    <div style={{
-      position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-      backgroundColor: 'rgba(0,0,0,0.8)', zIndex: 10000,
-      display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px'
-    }} onClick={onClose}>
-      
-      <div className="modal-enter" style={{
-        backgroundColor: '#f9f6f0', width: '100%', maxWidth: '600px',
-        border: '4px solid #1a1a1a', padding: '40px', position: 'relative',
-        fontFamily: 'Times New Roman, serif', color: '#1a1a1a',
-        boxShadow: '0 20px 50px rgba(0,0,0,0.5)'
-      }} onClick={e => e.stopPropagation()}>
+    <div className="modal-overlay" onClick={onClose}>
+      <div className="modal-content" onClick={e => e.stopPropagation()}>
         
-        <button onClick={onClose} style={{
-          position: 'absolute', top: '16px', right: '16px', background: 'none', border: 'none', 
-          fontSize: '1.5rem', cursor: 'var(--cursor-stamp)', color: '#1a1a1a', fontWeight: 'bold'
-        }}>&times;</button>
+        {view === 'FORM' && (
+          <>
+            <div className="modal-header">
+              <h2 className="modal-title">FILE RTI APPLICATION</h2>
+              <button className="modal-close" onClick={onClose} aria-label="Close">✕</button>
+            </div>
 
-        <div style={{ textAlign: 'center', borderBottom: '2px solid #1a1a1a', paddingBottom: '16px', marginBottom: '24px' }}>
-          <h2 style={{ fontSize: '2rem', margin: 0 }}>GOVERNMENT OF INDIA</h2>
-          <h3 style={{ fontSize: '1.2rem', margin: '8px 0 0 0' }}>Right to Information Act, 2005 - FORM A</h3>
-        </div>
+            {error && (
+              <div className="rti-error-box">
+                ⚠ {error}
+              </div>
+            )}
 
-        <div style={{ fontSize: '1.1rem', lineHeight: '1.8' }}>
-          <p><strong>To:</strong><br/>The Public Information Officer,<br/>{department}</p>
-          <br/>
-          <p><strong>Subject:</strong> Request for information under section 6(1) of the RTI Act.</p>
-          <p style={{ marginTop: '16px', padding: '16px', background: 'rgba(0,0,0,0.05)', border: '1px dashed #1a1a1a' }}>
-            Requesting immediate disclosure of financial expenditure logs overseen by <strong>{official.name}</strong> ({official.title}).
-          </p>
-        </div>
-        
-        <div style={{ marginTop: '40px', textAlign: 'center' }}>
-          <button 
-            className="vintage-stamp stamp-blue" 
-            style={{ fontSize: '1.2rem', padding: '12px 24px', background: '#e6dfd1' }}
-            onClick={(e) => {
-              e.currentTarget.classList.add('stamp-press-anim');
-              setTimeout(() => {
-                e.currentTarget.classList.remove('stamp-press-anim');
-                generatePDF();
-              }, 200);
-            }}
-          >
-            DOWNLOAD AS PDF
-          </button>
-        </div>
-        
+            <div className="rti-readonly-info">
+              <div className="rti-form-label">Department</div>
+              <div style={{ marginBottom: '12px', fontFamily: 'Lora' }}>{department || 'N/A'}</div>
+              <div className="rti-form-label">PIO (Public Information Officer)</div>
+              <div style={{ fontFamily: 'Lora' }}>{official ? `${official.name} — ${official.title}` : 'Officer information not available'}</div>
+            </div>
+
+            <form onSubmit={(e) => handleStampClick(e, () => generateDraft(e))}>
+              <div className="rti-form-group">
+                <label className="rti-form-label">Citizen Name *</label>
+                <input type="text" name="citizenName" value={formData.citizenName} onChange={handleChange} className="rti-form-input" required />
+              </div>
+
+              <div className="rti-form-group">
+                <label className="rti-form-label">Address *</label>
+                <textarea name="citizenAddress" value={formData.citizenAddress} onChange={handleChange} className="rti-form-textarea" rows="2" required></textarea>
+              </div>
+
+              <div className="rti-form-group">
+                <label className="rti-form-label">Email *</label>
+                <input type="email" name="citizenEmail" value={formData.citizenEmail} onChange={handleChange} className="rti-form-input" required />
+              </div>
+
+              <div className="rti-form-group">
+                <label className="rti-form-label">State *</label>
+                <select name="stateCode" value={formData.stateCode} onChange={handleChange} className="rti-form-select" required>
+                  <option value="">Select State</option>
+                  {Object.entries(stateCodeMap).map(([stateName, code]) => (
+                    <option key={code} value={code}>{stateName}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="rti-form-group">
+                <label className="rti-form-label">District Code</label>
+                <input type="text" name="districtCode" value={formData.districtCode} onChange={handleChange} className="rti-form-input" placeholder="e.g. DELHI_CENTRAL" />
+              </div>
+
+              <div className="rti-form-group">
+                <label className="rti-form-label">Category Code</label>
+                <input type="text" name="categoryCode" value={formData.categoryCode} onChange={handleChange} className="rti-form-input" placeholder="e.g. EXAM_IRREGULARITY" />
+              </div>
+
+              <div className="rti-form-group">
+                <label className="rti-form-label">Department Code</label>
+                <input type="text" name="departmentCode" value={formData.departmentCode} onChange={handleChange} className="rti-form-input" placeholder="e.g. NTA_CENTRAL" />
+              </div>
+
+              <button 
+                type="submit"
+                className="vintage-stamp stamp-blue" 
+                style={{ width: '100%', marginTop: '16px', background: 'transparent' }}
+              >
+                GENERATE DRAFT
+              </button>
+            </form>
+          </>
+        )}
+
+        {view === 'GENERATING' && (
+          <div style={{ textAlign: 'center', padding: '64px 0' }}>
+            <div className="vintage-stamp stamp-blue rti-pulse-text" style={{ fontSize: '1.5rem', background: 'transparent' }}>
+              DRAFTING APPLICATION...
+            </div>
+            <p style={{ marginTop: '16px', color: 'var(--text-secondary)', fontFamily: 'Lora', fontStyle: 'italic' }}>
+              Drafting Section 6(1) and 6(3) provisions under RTI Act, 2005...
+            </p>
+          </div>
+        )}
+
+        {view === 'DRAFT' && draftData && (
+          <>
+            <div className="modal-header">
+              <h2 className="modal-title">RTI DRAFT READY</h2>
+              <button className="modal-close" onClick={onClose} aria-label="Close">✕</button>
+            </div>
+
+            <div className="rti-readonly-info" style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '8px', marginBottom: '16px' }}>
+              <div>
+                <span className="rti-form-label" style={{ display: 'inline', marginRight: '8px' }}>To:</span>
+                <span style={{ fontFamily: 'Lora', fontSize: '0.9rem' }}>{draftData.pioName || 'PIO'}, {draftData.pioDesignation || ''}</span>
+              </div>
+              <div>
+                <span className="rti-form-label" style={{ display: 'inline', marginRight: '8px' }}>Dept:</span>
+                <span style={{ fontFamily: 'Lora', fontSize: '0.9rem' }}>{draftData.departmentName}</span>
+              </div>
+              <div>
+                <span className="rti-form-label" style={{ display: 'inline', marginRight: '8px' }}>Date:</span>
+                <span style={{ fontFamily: 'Lora', fontSize: '0.9rem' }}>{draftData.generatedDate}</span>
+              </div>
+            </div>
+
+            <div className="rti-draft-container">
+              {draftData.draftText}
+            </div>
+
+            {draftData.questions && draftData.questions.length > 0 && (
+              <div style={{ marginBottom: '24px' }}>
+                <h4 className="rti-form-label" style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '8px' }}>GENERATED QUESTIONS</h4>
+                <ol style={{ paddingLeft: '24px', margin: '12px 0 0 0', fontFamily: 'Lora' }}>
+                  {draftData.questions.map((q, idx) => (
+                    <li key={idx} style={{ marginBottom: '12px', lineHeight: '1.5' }}>{q}</li>
+                  ))}
+                </ol>
+              </div>
+            )}
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginTop: '24px' }}>
+              <button 
+                type="button"
+                className="vintage-stamp stamp-blue" 
+                style={{ width: '100%', background: 'transparent' }}
+                onClick={(e) => handleStampClick(e, handleCopy)}
+              >
+                {copyText}
+              </button>
+              <button 
+                type="button"
+                className="vintage-stamp stamp-red" 
+                style={{ width: '100%', background: 'transparent' }}
+                onClick={(e) => handleStampClick(e, handleDownload)}
+              >
+                DOWNLOAD AS TEXT
+              </button>
+              <button 
+                type="button"
+                className="vintage-stamp stamp-blue" 
+                style={{ width: '100%', background: 'transparent', opacity: 0.8 }}
+                onClick={(e) => handleStampClick(e, onClose)}
+              >
+                CLOSE
+              </button>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
