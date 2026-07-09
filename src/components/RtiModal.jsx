@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import ReactDOM from 'react-dom';
 import './RtiModal.css';
 
 const API_BASE = 'https://civicos-r2sf.onrender.com';
@@ -128,7 +129,7 @@ export default function RtiModal({ onClose, department, official, categoryCode =
     }
   };
 
-  return (
+  const modalContent = (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content" onClick={e => e.stopPropagation()}>
         
@@ -152,7 +153,7 @@ export default function RtiModal({ onClose, department, official, categoryCode =
               <div style={{ fontFamily: 'Lora' }}>{official ? `${official.name} — ${official.title}` : 'Officer information not available'}</div>
             </div>
 
-            <form onSubmit={(e) => handleStampClick(e, () => generateDraft(e))}>
+            <form onSubmit={(e) => { e.preventDefault(); handleStampClick(e, () => generateDraft(e)); }}>
               <div className="rti-form-group">
                 <label className="rti-form-label">Citizen Name *</label>
                 <input type="text" name="citizenName" value={formData.citizenName} onChange={handleChange} className="rti-form-input" required />
@@ -283,4 +284,6 @@ export default function RtiModal({ onClose, department, official, categoryCode =
       </div>
     </div>
   );
+
+  return ReactDOM.createPortal(modalContent, document.body);
 }

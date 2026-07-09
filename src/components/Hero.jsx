@@ -2,15 +2,12 @@ import React, { useState, useEffect } from 'react';
 import IndiaMap from './IndiaMap';
 import './Hero.css';
 import { getTranslation } from '../i18n';
-import ComplaintTracker from './ComplaintTracker';
-
 
 export default function Hero({ activeState, onStateSelect, lang, onSearch }) {
   const today = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
   const hindiDate = "१४ कार्तिक, शक संवत १९४८";
   const [query, setQuery] = useState('');
   const [todaysEdition, setTodaysEdition] = useState(null);
-  const [showTracker, setShowTracker] = useState(false);
 
 
 
@@ -66,13 +63,6 @@ export default function Hero({ activeState, onStateSelect, lang, onSearch }) {
                 placeholder={getTranslation(lang, 'searchPlaceholderNat')}
               />
               <button className="search-btn" onClick={() => onSearch?.(query)}>{getTranslation(lang, 'searchBtn')}</button>
-              <button
-                  className="search-btn track-btn"
-                  style={{ marginLeft: '12px' }}
-                  onClick={() => setShowTracker(true)}
-              >
-                TRACK COMPLAINT
-              </button>
             </div>
 
             <div style={{ marginTop: '16px', display: 'flex', justifyContent: 'center', gap: '12px', flexWrap: 'wrap' }}>
@@ -167,18 +157,10 @@ export default function Hero({ activeState, onStateSelect, lang, onSearch }) {
             <button className="search-btn" onClick={() => onSearch?.(query)}>
               {getTranslation(lang, 'searchBtn')}
             </button>
-            <button
-                className="search-btn track-btn"
-                style={{ marginLeft: '12px' }}
-                onClick={() => setShowTracker(true)}
-            >
-              TRACK COMPLAINT
-            </button>
           </div>
 
         </div>
       )}
-      {showTracker && <ComplaintTracker isOpen={true} onClose={() => setShowTracker(false)} />}
     </header>
   );
 }

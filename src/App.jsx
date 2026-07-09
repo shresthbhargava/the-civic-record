@@ -5,6 +5,7 @@ import AccountabilitySearch from './components/AccountabilitySearch'
 import StateFinancialHealth from './components/StateFinancialHealth'
 import ProjectTracker from './components/ProjectTracker'
 import CivicFeed from './components/CivicFeed'
+import ComplaintTracker from './components/ComplaintTracker'
 import { getTranslation, stateToLanguageMap } from './i18n'
 import { regionalImages } from './regionMap'
 
@@ -14,6 +15,7 @@ function App() {
   const [lang, setLang] = useState('en');
   const [pageTurn, setPageTurn] = useState(false);
   const [searchEvent, setSearchEvent] = useState(null);
+  const [showTracker, setShowTracker] = useState(false);
   const accountabilityRef = useRef(null);
 
   // Ink trail logic
@@ -80,8 +82,23 @@ function App() {
           <button onClick={() => setLang('bn')} className="hindi-text" style={{ fontWeight: lang === 'bn' ? 'bold' : 'normal', background: 'none', border: 'none', marginRight: '12px' }}>বাংলা</button>
           <button onClick={() => setLang('ta')} className="hindi-text" style={{ fontWeight: lang === 'ta' ? 'bold' : 'normal', background: 'none', border: 'none' }}>தமிழ்</button>
         </div>
-        <div style={{ fontFamily: 'Playfair Display SC', fontWeight: 'bold' }}>
-          Vol. 1 &bull; 1947 Edition
+        <div style={{ display: 'flex', alignItems: 'center', gap: '16px', fontFamily: 'Playfair Display SC', fontWeight: 'bold' }}>
+          <button 
+            style={{ 
+              background: 'transparent', 
+              border: '1px solid var(--text-primary)', 
+              color: 'var(--text-primary)',
+              fontFamily: 'Playfair Display SC',
+              textTransform: 'uppercase',
+              fontSize: '0.75rem',
+              padding: '4px 12px',
+              cursor: 'var(--cursor-stamp)'
+            }}
+            onClick={() => setShowTracker(true)}
+          >
+            Track Complaint
+          </button>
+          <span>Vol. 1 &bull; 1947 Edition</span>
         </div>
       </div>
 
@@ -134,6 +151,7 @@ function App() {
           </p>
         </footer>
       </div>
+      {showTracker && <ComplaintTracker isOpen={true} onClose={() => setShowTracker(false)} />}
     </div>
   )
 }
