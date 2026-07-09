@@ -1,0 +1,14 @@
+name: Ping Backend to Prevent Sleep
+
+on:
+  schedule:
+    # Runs every 14 minutes to keep the Render free tier awake
+    - cron: '*/14 * * * *'
+  workflow_dispatch: # Allows manual triggering
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Render Backend
+        run: curl -s https://civicos-r2sf.onrender.com/actuator/health

@@ -48,7 +48,14 @@ export default function CivicFeed({ activeState, lang }) {
         <div className="dispatch-layout" style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '32px' }}>
           <div className="primary-dispatches border-right-thin">
             {loading && (
-                <p style={{ fontStyle: 'italic', fontFamily: 'Lora' }}>Loading latest dispatches...</p>
+                <div style={{ padding: '48px 0', textAlign: 'center' }}>
+                  <div className="vintage-stamp stamp-red" style={{ display: 'inline-block', opacity: 0.7 }}>
+                    PRINTING DISPATCHES...
+                  </div>
+                  <p className="typewriter-text" style={{ fontFamily: 'Lora', fontStyle: 'italic', marginTop: '16px', color: 'var(--text-secondary)' }}>
+                    Receiving latest telegraphs from correspondents...
+                  </p>
+                </div>
             )}
 
             {!loading && primaryNews.length === 0 && (

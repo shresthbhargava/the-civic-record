@@ -15,8 +15,19 @@ function App() {
   const [lang, setLang] = useState('en');
   const [pageTurn, setPageTurn] = useState(false);
   const [searchEvent, setSearchEvent] = useState(null);
+  const [backendAwake, setBackendAwake] = useState(false);
   const [showTracker, setShowTracker] = useState(false);
   const accountabilityRef = useRef(null);
+
+  // Wake up backend
+  useEffect(() => {
+    fetch('https://civicos-r2sf.onrender.com/api/v1/news/edition/today')
+      .then(() => setBackendAwake(true))
+      .catch(() => {
+        // Fallback if fetch fails (e.g. CORS or network error)
+        setTimeout(() => setBackendAwake(true), 5000);
+      });
+  }, []);
 
   // Ink trail logic
   useEffect(() => {
@@ -70,6 +81,22 @@ function App() {
       setPageTurn(false);
     }, 800); // Wait for exit animation
   };
+
+  if (!backendAwake) {
+    return (
+      <div style={{ height: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', backgroundColor: 'var(--bg-primary)', fontFamily: 'Playfair Display SC', color: 'var(--text-primary)' }}>
+        <h1 className="typewriter-text" style={{ fontSize: '2.5rem', marginBottom: '16px', borderBottom: '2px solid var(--text-primary)', paddingBottom: '8px' }}>
+          WARMING UP THE PRESSES...
+        </h1>
+        <p className="typewriter-text" style={{ fontSize: '1rem', fontFamily: 'Lora', fontStyle: 'italic', animationDelay: '1s', opacity: 0 }}>
+          Retrieving the latest national records. This may take up to 30 seconds...
+        </p>
+        <div style={{ marginTop: '32px', width: '200px', height: '2px', background: 'var(--text-primary)', position: 'relative', overflow: 'hidden' }}>
+          <div style={{ position: 'absolute', top: 0, left: 0, height: '100%', width: '30%', background: 'var(--accent-gold)', animation: 'bg-pan 2s linear infinite' }} />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="app-container">

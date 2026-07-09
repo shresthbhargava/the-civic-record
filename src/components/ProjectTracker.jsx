@@ -58,10 +58,10 @@ export default function ProjectTracker({ activeState, lang }) {
         <section className="editorial-story">
           <div className="section-flag">{getTranslation(lang, 'projectTracker') || 'NATIONAL PROJECT TRACKER'}</div>
           <div style={{ padding: '48px 0', textAlign: 'center' }}>
-            <div className="vintage-stamp stamp-blue" style={{ display: 'inline-block', animation: 'pulse 1.5s infinite' }}>
+            <div className="vintage-stamp stamp-blue" style={{ display: 'inline-block', opacity: 0.7 }}>
               SURVEYING WORKSITES...
             </div>
-            <p style={{ fontFamily: 'Lora', fontStyle: 'italic', marginTop: '16px', color: 'var(--text-secondary)' }}>
+            <p className="typewriter-text" style={{ fontFamily: 'Lora', fontStyle: 'italic', marginTop: '16px', color: 'var(--text-secondary)' }}>
               Retrieving project progress from field offices...
             </p>
           </div>
