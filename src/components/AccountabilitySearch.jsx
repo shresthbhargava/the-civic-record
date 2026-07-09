@@ -55,8 +55,8 @@ export default function AccountabilitySearch({ activeState, lang, searchEvent })
         setSearchData({
           categoryCode: match.categoryCode || '',
           categoryName: match.categoryName,
-          departmentCode: match.responsibleDepartment.code || '',
           departmentName: match.responsibleDepartment.name,
+          departmentCode: match.responsibleDepartment.code || '',
           headline: `${match.categoryName.toUpperCase()} — ${match.responsibleDepartment.name.toUpperCase()}`,
           department: match.responsibleDepartment.name,
           jurisdiction: match.responsibleDepartment.jurisdictionLevel,
@@ -351,7 +351,7 @@ export default function AccountabilitySearch({ activeState, lang, searchEvent })
       <Modal isOpen={!!modalData} onClose={() => setModalData(null)} title={modalData?.title} stampType={modalData?.stamp}>
         <p>{modalData?.content}</p>
       </Modal>
-      {isRtiOpen && <RtiModal onClose={() => setIsRtiOpen(false)} department={data?.department} official={data?.official} />}
+      {isRtiOpen && <RtiModal onClose={() => setIsRtiOpen(false)} department={data?.department} official={data?.official} departmentCode={data?.departmentCode} categoryCode={data?.categoryCode} />}
       {isShareCardOpen && <ShareCard onClose={() => setIsShareCardOpen(false)} data={data} />}
     </section>
 

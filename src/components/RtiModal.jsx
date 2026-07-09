@@ -29,9 +29,7 @@ export default function RtiModal({ onClose, department, official, categoryCode =
     citizenAddress: '',
     citizenEmail: '',
     stateCode: '',
-    districtCode: '',
-    categoryCode: categoryCode,
-    departmentCode: departmentCode
+    districtCode: ''
   });
   const [error, setError] = useState('');
   const [draftData, setDraftData] = useState(null);
@@ -70,12 +68,18 @@ export default function RtiModal({ onClose, department, official, categoryCode =
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 seconds timeout
 
+      const payload = {
+        ...formData,
+        categoryCode,
+        departmentCode
+      };
+
       const response = await fetch(`${API_BASE}/api/v1/rti/generate`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(payload),
         signal: controller.signal
       });
 
@@ -182,16 +186,6 @@ export default function RtiModal({ onClose, department, official, categoryCode =
               <div className="rti-form-group">
                 <label className="rti-form-label">District Code</label>
                 <input type="text" name="districtCode" value={formData.districtCode} onChange={handleChange} className="rti-form-input" placeholder="e.g. DELHI_CENTRAL" />
-              </div>
-
-              <div className="rti-form-group">
-                <label className="rti-form-label">Category Code</label>
-                <input type="text" name="categoryCode" value={formData.categoryCode} onChange={handleChange} className="rti-form-input" placeholder="e.g. EXAM_IRREGULARITY" />
-              </div>
-
-              <div className="rti-form-group">
-                <label className="rti-form-label">Department Code</label>
-                <input type="text" name="departmentCode" value={formData.departmentCode} onChange={handleChange} className="rti-form-input" placeholder="e.g. NTA_CENTRAL" />
               </div>
 
               <button 
